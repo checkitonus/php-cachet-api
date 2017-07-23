@@ -1,0 +1,24 @@
+{
+    "name": "checkitonus/cachet-api",
+    "description": "PHP Implementation of the Cachet API",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andrew Judd",
+            "email": "contact@andrewjudd.ca"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "CheckItOnUs\\Cachet\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
