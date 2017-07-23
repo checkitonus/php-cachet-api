@@ -3,6 +3,7 @@
 namespace CheckItOnUs\Cachet\Request;
 
 use GuzzleHttp\Client;
+use CheckItOnUs\Request\PagedResponse;
 
 class GuzzleRequest implements WebRequest
 {
@@ -18,6 +19,9 @@ class GuzzleRequest implements WebRequest
      */
     private $_configuration;
 
+    /**
+     * Initialize the object.
+     */
     public function __construct()
     {
         $this->_client = new Client();
@@ -49,7 +53,10 @@ class GuzzleRequest implements WebRequest
      */
     public function get($url)
     {
-
+        return new PagedResponse(
+            $this,
+            $url
+        );
     }
 
     /**
@@ -59,7 +66,7 @@ class GuzzleRequest implements WebRequest
      */
     public function delete($url)
     {
-
+        return $this->raw('DELETE', $url);
     }
 
     /**
@@ -70,7 +77,7 @@ class GuzzleRequest implements WebRequest
      */
     public function post($url, $data)
     {
-
+        return $this->raw('POST', $url, $data);
     }
 
     /**
@@ -81,7 +88,7 @@ class GuzzleRequest implements WebRequest
      */
     public function put($url, $data)
     {
-
+        return $this->raw('PUT', $url, $data);
     }
 
     /**
@@ -92,11 +99,30 @@ class GuzzleRequest implements WebRequest
      */
     public function patch($url, $data)
     {
-
+        return $this->raw('PATCH', $url, $data);
     }
 
+    /**
+     * Processes a raw request.
+     *
+     * @param      string  $method  The method
+     * @param      string  $url     The url
+     * @param      mixed  $data    The data
+     *
+     * @return     Object
+     */
     private function raw($method, $url, $data = null)
     {
+        $headers = [
+            'X-Cachet-Token' => $this->_configuration['api-key'],
+        ];
 
+        if(!empty($data)) {
+            $headers['form_data'] = $data;
+        }
+
+        return json_decode(
+            $this->_client->request($method, $url, $headers)
+        );
     }
 }

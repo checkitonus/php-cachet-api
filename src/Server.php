@@ -71,8 +71,30 @@ class Server
      *
      * @return \CheckItOnUs\Cachet\Request\WebRequest
      */
-    public function getWebRequest()
+    public function request()
     {
         return $this->_webRequest;
+    }
+
+    /**
+     * Sends a ping request to the server (verifies connectivity to the server)
+     *
+     * @ref https://docs.cachethq.io/reference#ping
+     * @return     stdClass
+     */
+    public function ping()
+    {
+        return $this->request()->get('/v1/ping');
+    }
+
+    /**
+     * Gets the version of Cachet currently installed on the server
+     *
+     * @ref https://docs.cachethq.io/reference#version
+     * @return     stdClass 
+     */
+    public function version()
+    {
+        return $this->request()->get('/v1/version');    
     }
 }

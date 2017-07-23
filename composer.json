@@ -3,7 +3,8 @@
     "description": "PHP Implementation of the Cachet API",
     "type": "library",
     "require": {
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^6.3",
+        "tightenco/collect": "^5.4"
     },
     "require-dev": {
         "phpunit/phpunit": "*"
