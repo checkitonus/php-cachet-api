@@ -3,9 +3,9 @@
 namespace CheckItOnUs\Cachet\Builders;
 
 use CheckItOnUs\Cachet\Server;
-use CheckItOnUs\Cachet\Component;
+use CheckItOnUs\Cachet\Incident;
 
-class ComponentQuery
+class IncidentQuery
 {
     /**
      * The server that the component is linked to.
@@ -27,35 +27,35 @@ class ComponentQuery
     }
 
     /**
-     * Finds a specific Component by the ID
+     * Finds a specific Incident by the ID
      *
      * @param      integer  $id     The identifier
      *
-     * @return     \CheckItOnUs\Cachet\Component
+     * @return     \CheckItOnUs\Cachet\Incident
      */
     public function findById($id)
     {
-        return new Component(
+        return new Incident(
             $this->_server,
             (array)$this->_server
                 ->request()
-                ->get(Component::getApiRootPath() . '/' . $id)
+                ->get(Incident::getApiRootPath() . '/' . $id)
                 ->data
         );
     }
 
     /**
-     * Finds a specific Component based on the name
+     * Finds a specific Incident based on the name
      *
      * @param      string     $name   The name
      *
-     * @return     CheckItOnUs\Cachet\Component
+     * @return     CheckItOnUs\Cachet\Incident
      */
     public function findByName($name)
     {
         $pages = $this->_server
                     ->request()
-                    ->get(Component::getApiRootPath());
+                    ->get(Incident::getApiRootPath());
 
         foreach($pages as $page) {
             $component = $page->first(function($component) use($name) {
@@ -63,7 +63,7 @@ class ComponentQuery
             });
 
             if($component !== null) {
-                return new Component(
+                return new Incident(
                     $this->_server,
                     (array)$component
                 );
@@ -82,14 +82,14 @@ class ComponentQuery
     {
         $pages = $this->_server
                     ->request()
-                    ->get(Component::getApiRootPath());
+                    ->get(Incident::getApiRootPath());
 
         $components = collect();
 
         foreach($pages as $page) {
             foreach($page as $component) {
                 $components->push(
-                    new Component(
+                    new Incident(
                         $this->_server,
                         (array)$component
                     )

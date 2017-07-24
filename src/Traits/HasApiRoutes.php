@@ -45,7 +45,7 @@ trait HasApiRoutes
     {
         return $this->_server
                 ->request()
-                ->post($this->getApiRootPath(), $this->getMetadata());
+                ->post(static::getApiRootPath(), $this->getMetadata());
     }
 
     /**
@@ -74,7 +74,7 @@ trait HasApiRoutes
 
         return $this->_server
                 ->request()
-                ->put($this->getApiRootPath() . '/' . $this['id'], $this->getMetadata());
+                ->put(static::getApiRootPath() . '/' . $this['id'], $this->getMetadata());
     }
 
     /**
@@ -86,6 +86,6 @@ trait HasApiRoutes
     {
         return $this->_server
             ->request()
-            ->delete($this->getApiRootPath() . '/' . $this['id']);
+            ->delete(static::getApiRootPath() . '/' . $this['id']);
     }
 }

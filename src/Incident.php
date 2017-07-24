@@ -7,8 +7,9 @@ use CheckItOnUs\Cachet\Server;
 use CheckItOnUs\Cachet\Traits\HasMetadata;
 use CheckItOnUs\Cachet\Traits\HasApiRoutes;
 use CheckItOnUs\Cachet\Builders\ComponentQuery;
+use CheckItOnUs\Cachet\Builders\ComponentGroupQuery;
 
-class Component implements ArrayAccess
+class Incident implements ArrayAccess
 {
     use HasMetadata
         ,HasApiRoutes;
@@ -25,7 +26,7 @@ class Component implements ArrayAccess
      */
     public static function on(Server $server)
     {
-        return (new ComponentQuery())
+        return (new IncidentQuery())
             ->onServer($server);
     }
 
@@ -41,8 +42,13 @@ class Component implements ArrayAccess
             ->setMetadata($metadata);
     }
 
+    /**
+     * Gets the base path for the API
+     *
+     * @return     string  The api root path.
+     */
     public static function getApiRootPath()
     {
-        return '/v1/components';
+        return '/v1/incidents';
     }
 }

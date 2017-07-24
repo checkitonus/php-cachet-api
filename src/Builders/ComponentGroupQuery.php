@@ -4,8 +4,9 @@ namespace CheckItOnUs\Cachet\Builders;
 
 use CheckItOnUs\Cachet\Server;
 use CheckItOnUs\Cachet\Component;
+use CheckItOnUs\Cachet\ComponentGroup;
 
-class ComponentQuery
+class ComponentGroupQuery
 {
     /**
      * The server that the component is linked to.
@@ -35,11 +36,11 @@ class ComponentQuery
      */
     public function findById($id)
     {
-        return new Component(
+        return new ComponentGroup(
             $this->_server,
             (array)$this->_server
                 ->request()
-                ->get(Component::getApiRootPath() . '/' . $id)
+                ->get(ComponentGroup::getApiRootPath() . '/' . $id)
                 ->data
         );
     }
@@ -55,7 +56,7 @@ class ComponentQuery
     {
         $pages = $this->_server
                     ->request()
-                    ->get(Component::getApiRootPath());
+                    ->get(ComponentGroup::getApiRootPath());
 
         foreach($pages as $page) {
             $component = $page->first(function($component) use($name) {
@@ -63,7 +64,7 @@ class ComponentQuery
             });
 
             if($component !== null) {
-                return new Component(
+                return new ComponentGroup(
                     $this->_server,
                     (array)$component
                 );
@@ -82,14 +83,14 @@ class ComponentQuery
     {
         $pages = $this->_server
                     ->request()
-                    ->get(Component::getApiRootPath());
+                    ->get(ComponentGroup::getApiRootPath());
 
         $components = collect();
 
         foreach($pages as $page) {
             foreach($page as $component) {
                 $components->push(
-                    new Component(
+                    new ComponentGroup(
                         $this->_server,
                         (array)$component
                     )
