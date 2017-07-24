@@ -3,7 +3,9 @@
 namespace CheckItOnUs\Cachet\Request;
 
 use GuzzleHttp\Client;
-use CheckItOnUs\Request\PagedResponse;
+use CheckItOnUs\Cachet\Configuration;
+use GuzzleHttp\Exception\ClientException;
+use CheckItOnUs\Cachet\Request\PagedResponse;
 
 class GuzzleRequest implements WebRequest
 {
@@ -57,6 +59,27 @@ class GuzzleRequest implements WebRequest
             $this,
             $url
         );
+    }
+
+    /**
+     * Performs a raw GET request
+     *
+     * @param      string  $url    THe URL suffix to send the request to
+     *
+     * @return     mixed
+     */
+    public function getRaw($url)
+    {
+        try {
+            return $this->raw('GET', $url);
+        }
+        catch(ClientException $ex) {
+            if($ex->getResponse()->getStatusCode() == 404) {
+                return null;
+            }
+
+            throw $ex;
+        }
     }
 
     /**
@@ -122,7 +145,10 @@ class GuzzleRequest implements WebRequest
         }
 
         return json_decode(
-            $this->_client->request($method, $url, $headers)
+            $this->_client
+                ->request($method, '/api' . $url, $headers)
+                ->getBody()
+                ->__toString()
         );
     }
 }

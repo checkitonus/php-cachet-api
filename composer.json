@@ -4,10 +4,12 @@
     "type": "library",
     "require": {
         "guzzlehttp/guzzle": "^6.3",
-        "tightenco/collect": "^5.4"
+        "tightenco/collect": "^5.4",
+        "cocur/slugify": "^2.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "*"
+        "phpunit/phpunit": "*",
+        "psy/psysh": "*"
     },
     "license": "MIT",
     "authors": [

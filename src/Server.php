@@ -2,6 +2,7 @@
 
 namespace CheckItOnUs\Cachet;
 
+use CheckItOnUs\Cachet\Component;
 use CheckItOnUs\Cachet\Request\GuzzleRequest;
 
 class Server
@@ -96,5 +97,11 @@ class Server
     public function version()
     {
         return $this->request()->get('/v1/version');    
+    }
+
+    public function components()
+    {
+        return Component::on($this)
+                ->all();
     }
 }

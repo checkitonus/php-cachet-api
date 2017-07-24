@@ -2,10 +2,15 @@
 
 namespace CheckItOnUs\Cachet;
 
+use ArrayAccess;
 use CheckItOnUs\Cachet\Server;
+use CheckItOnUs\Cachet\Traits\HasMetadata;
+use CheckItOnUs\Cachet\Builders\ComponentQuery;
 
-class Component
+class Component implements ArrayAccess
 {
+    use HasMetadata;
+
     /**
      * The server that the component is linked to.
      * 
@@ -13,45 +18,37 @@ class Component
      */
     private $_server;
 
-    public function __construct(Server $server)
-    {
-        $this->_server = $server;
-    }
-
     /**
      * Dictates the server that the Component relates to.
      *
      * @param      \CheckItOnUs\Cachet\Server  $server  The server
      */
-    public static function onServer(Server $server)
+    public static function on(Server $server)
     {
-        return new self($server);
+        return (new ComponentQuery())
+            ->onServer($server);
     }
 
-    public function findById($id)
+    /**
+     * Hydrates a new instance of a Component
+     *
+     * @param      array  $metadata  The metadata
+     */
+    public function __construct(Server $server, array $metadata)
     {
-        return $this->_server
-                ->request()
-                ->get('/v1/components/' . $id)
-                ->data;
+        $this->setServer($server)
+            ->setMetadata($metadata);
     }
 
-    public function findByName($name)
+    /**
+     * Sets the server.
+     *
+     * @param      \CheckItOnUs\Cachet\Server  $server  The server
+     * @return     \CheckItOnUs\Cachet\Component
+     */
+    public function setServer(Server $server)
     {
-        $pages = $this->_server
-                    ->request()
-                    ->get('/v1/components/');
-
-        foreach($pages as $page) {
-            $component = $page->first(function($component) use($name) {
-                return $component->name == $name;
-            });
-
-            if($component !== null) {
-                return $component;
-            }
-        }
-
-        return null;
+        $this->_server = $server;
+        return $this;
     }
 }

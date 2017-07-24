@@ -1,6 +1,6 @@
 <?php
 
-namespace CheckItOnUs\Request;
+namespace CheckItOnUs\Cachet\Request;
 
 use Iterator;
 use CheckItOnUs\Cachet\Request\WebRequest;
@@ -28,6 +28,11 @@ class PagedResponse implements Iterator
      */
     private $_page = 1;
 
+    /**
+     * The maximum page number
+     *
+     * @var        integer
+     */
     private $_maximumPage = 1;
 
     /**
@@ -37,12 +42,19 @@ class PagedResponse implements Iterator
      */
     private $_pagedData = [];
 
+    /**
+     * The data for the current active request
+     * 
+     * @var mixed
+     */
     public $data;
 
     public function __construct(WebRequest $webRequest, $url)
     {
         $this->_webRequest = $webRequest;
         $this->_url = $url;
+
+        $this->sendRequest();
     }
 
     public function current()
@@ -53,7 +65,7 @@ class PagedResponse implements Iterator
             return $this->data = $this->_pagedData[$this->_page];
         }
 
-        return $this->data = $this->_pagedData[$this->_page] = $this->sendRequest();
+        return $this->sendRequest();
     }
 
     public function key()
@@ -73,9 +85,14 @@ class PagedResponse implements Iterator
 
     public function valid()
     {
-        return $this->_page < $this->_maximumPage;
+        return $this->_page <= $this->_maximumPage;
     }
 
+    /**
+     * Used internally in order to send a specific web request
+     *
+     * @return     mixed
+     */
     private function sendRequest()
     {
         $url = $this->_url;
@@ -84,13 +101,17 @@ class PagedResponse implements Iterator
             $url .= '?page=' . $this->_page;
         }
 
-        $response = $this->_webRequest->get($url);
+        $response = $this->_webRequest->getRaw($url);
+
+        if($response === null) {
+            return null;
+        }
 
         // Is there pagination information?
         if(isset($response->meta, $response->meta->pagination)) {
             $this->_maximumPage = $response->meta->pagination->total_pages;
         }
 
-        return is_array($response->data) ? collect($response->data) : $response->data;
+        return $this->data = $this->_pagedData[$this->_page] = is_array($response->data) ? collect($response->data) : $response->data;
     }
 }

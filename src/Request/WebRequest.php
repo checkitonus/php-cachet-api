@@ -17,8 +17,17 @@ interface WebRequest
      * Performs a GET request.
      *
      * @param      string  $url    The URL suffix to send the request to
+     * @return     \CheckItOnUs\Cachet\Request\PagedResponse
      */
     function get($url);
+
+    /**
+     * Performs a raw GET request.
+     *
+     * @param      string  $url    The URL suffix to send the request to
+     * @return     mixed
+     */
+    function getRaw($url);
 
     /**
      * Performs a DELETE request.
