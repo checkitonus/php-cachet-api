@@ -21,14 +21,13 @@ class ComponentGroup extends BaseApiComponent
     {
         if(!empty($metadata['enabled_components'])) {
             $components = collect($metadata['enabled_components'])
-                            ->map(function($component) {
-                                return new Component($component);
+                            ->map(function($component) use($server) {
+                                return new Component($server, $component);
                             });
             unset($metadata['enabled_components']);
         }
 
-        $this->setServer($server)
-            ->setMetadata($metadata);
+        parent::__construct($server, $metadata);
     }
 
     /**
