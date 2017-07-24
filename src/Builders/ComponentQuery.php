@@ -44,6 +44,13 @@ class ComponentQuery
         );
     }
 
+    /**
+     * Finds a specific Component based on the name
+     *
+     * @param      string     $name   The name
+     *
+     * @return     CheckItOnUs\Cachet\Component
+     */
     public function findByName($name)
     {
         $pages = $this->_server
@@ -66,6 +73,11 @@ class ComponentQuery
         return null;
     }
 
+    /**
+     * Retrieves all of the Components on the server
+     *
+     * @return     \Illuminate\Support\Collection
+     */
     public function all()
     {
         $pages = $this->_server

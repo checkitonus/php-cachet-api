@@ -34,10 +34,21 @@ class Component implements ArrayAccess
      *
      * @param      array  $metadata  The metadata
      */
-    public function __construct(Server $server, array $metadata)
+    public function __construct(Server $server, array $metadata = [])
     {
         $this->setServer($server)
             ->setMetadata($metadata);
+    }
+
+    /**
+     * Sets the server.
+     *
+     * @param      \CheckItOnUs\Cachet\Server  $server  The server
+     * @return     \CheckItOnUs\Cachet\Component
+     */
+    public function onServer(Server $server)
+    {
+        return $this->setServer($server);
     }
 
     /**
@@ -50,5 +61,29 @@ class Component implements ArrayAccess
     {
         $this->_server = $server;
         return $this;
+    }
+
+    /**
+     * Creates a new component
+     *
+     * @return     stdClass
+     */
+    public function create()
+    {
+        return $this->_server
+                ->request()
+                ->post('/v1/components', $this->getMetadata());
+    }
+
+    /**
+     * Processes the deletion of a component.
+     *
+     * @return     stdClass
+     */
+    public function delete()
+    {
+        return $this->_server
+            ->request()
+            ->delete('/v1/components/' . $this['id']);
     }
 }

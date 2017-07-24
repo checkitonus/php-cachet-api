@@ -8,8 +8,10 @@ trait HasMetadata
 {
     /**
      * The metadata about the specific component
+     * 
+     * @var array
      */
-    private $_metadata;
+    private $_metadata = [];
 
     /**
      * Determines whether or not an offset exists
@@ -66,7 +68,7 @@ trait HasMetadata
                 return $this[$key];
             }
             else if($verb == 'set') {
-                $this[$key] = $parameters;
+                $this[$key] = $parameters[0];
                 return $this;
             }
         }
@@ -83,5 +85,15 @@ trait HasMetadata
     {
         $this->_metadata = $metadata;
         return $this;
+    }
+
+    /**
+     * Used internally in order to get all of the metadaa about the component
+     *
+     * @return     array  The metadata.
+     */
+    public function getMetadata()
+    {
+        return $this->_metadata;
     }
 }

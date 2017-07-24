@@ -65,7 +65,6 @@ class GuzzleRequest implements WebRequest
      * Performs a raw GET request
      *
      * @param      string  $url    THe URL suffix to send the request to
-     *
      * @return     mixed
      */
     public function getRaw($url)
@@ -137,11 +136,13 @@ class GuzzleRequest implements WebRequest
     private function raw($method, $url, $data = null)
     {
         $headers = [
-            'X-Cachet-Token' => $this->_configuration['api-key'],
+            'headers' => [
+                'X-Cachet-Token' => $this->_configuration['api-key'],
+            ],
         ];
 
         if(!empty($data)) {
-            $headers['form_data'] = $data;
+            $headers['form_params'] = $data;
         }
 
         return json_decode(

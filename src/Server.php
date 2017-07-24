@@ -54,6 +54,9 @@ class Server
     {
         $this->_configuration = $value;
 
+        $this->request()
+            ->setConfiguration($value);
+
         return $this;
     }
 
@@ -85,7 +88,8 @@ class Server
      */
     public function ping()
     {
-        return $this->request()->get('/v1/ping');
+        return $this->request()
+                ->get('/v1/ping');
     }
 
     /**
@@ -96,7 +100,8 @@ class Server
      */
     public function version()
     {
-        return $this->request()->get('/v1/version');    
+        return $this->request()
+                ->get('/v1/version');    
     }
 
     public function components()
