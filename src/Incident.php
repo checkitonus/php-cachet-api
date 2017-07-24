@@ -5,19 +5,17 @@ namespace CheckItOnUs\Cachet;
 use ArrayAccess;
 use CheckItOnUs\Cachet\Server;
 use CheckItOnUs\Cachet\Traits\HasMetadata;
-use CheckItOnUs\Cachet\Traits\HasApiRoutes;
-use CheckItOnUs\Cachet\Builders\ComponentQuery;
-use CheckItOnUs\Cachet\Builders\ComponentGroupQuery;
+use CheckItOnUs\Cachet\Builders\IncidentQuery;
 
 class Incident implements ArrayAccess
 {
-    use HasMetadata
-        ,HasApiRoutes;
+    use HasMetadata;
 
-    const OPERATIONAL = 1;
-    const PERFORMANCE_ISSUES = 2;
-    const PARTIAL_OUTAGE = 3;
-    const MAJOR_OUTAGE = 4;
+    const SCHEDULED = 0;
+    const INVESTIGATING = 1;
+    const IDENTIFIED = 1;
+    const WATCHING = 3;
+    const FIXED = 4;
 
     /**
      * Dictates the server that the Component relates to.
@@ -37,9 +35,9 @@ class Incident implements ArrayAccess
      */
     public function __construct(Server $server, array $metadata = [])
     {
-        $this->setServer($server)
-            ->setStatus(self::OPERATIONAL)
-            ->setMetadata($metadata);
+        $this->setStatus(self::INVESTIGATING);
+
+        parent::__construct($server, $metadata);
     }
 
     /**

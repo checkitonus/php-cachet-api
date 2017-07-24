@@ -1,10 +1,11 @@
 <?php
 
-namespace CheckItOnUs\Cachet\Traits;
+namespace CheckItOnUs\Cachet;
 
+use NotImplementedException;
 use CheckItOnUs\Cachet\Server;
 
-trait HasApiRoutes
+class BaseApiComponent
 {
     /**
      * The server that the component is linked to.
@@ -12,6 +13,17 @@ trait HasApiRoutes
      * @var \CheckItOnUs\Cachet\Server
      */
     private $_server;
+
+    /**
+     * Hydrates a new instance of a Component
+     *
+     * @param      array  $metadata  The metadata
+     */
+    public function __construct(Server $server, array $metadata = [])
+    {
+        $this->setServer($server)
+            ->setMetadata($metadata);
+    }
 
     /**
      * Sets the server.
@@ -87,5 +99,10 @@ trait HasApiRoutes
         return $this->_server
             ->request()
             ->delete(static::getApiRootPath() . '/' . $this['id']);
+    }
+
+    public static function getApiRootPath()
+    {
+        throw new NotImplementedException();
     }
 }
