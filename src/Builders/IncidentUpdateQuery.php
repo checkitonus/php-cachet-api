@@ -2,42 +2,42 @@
 
 namespace CheckItOnUs\Cachet\Builders;
 
-use CheckItOnUs\Cachet\Component;
-use CheckItOnUs\Cachet\ComponentGroup;
-use CheckItOnUs\Cachet\Builders\BaseQuery;
+use CheckItOnUs\Cachet\Server;
+use CheckItOnUs\Cachet\IncidentUpdate;
 
-class ComponentGroupQuery extends BaseQuery
+class IncidentUpdateQuery
 {
+
     /**
-     * Finds a specific Component by the ID
+     * Finds a specific Incident by the ID
      *
      * @param      integer  $id     The identifier
      *
-     * @return     \CheckItOnUs\Cachet\Component
+     * @return     \CheckItOnUs\Cachet\Incident
      */
     public function findById($id)
     {
-        return new ComponentGroup(
+        return new IncidentUpdate(
             $this->getServer(),
             (array)$this->getServer()
                 ->request()
-                ->get(ComponentGroup::getApiRootPath() . '/' . $id)
+                ->get(IncidentUpdate::getApiRootPath() . '/' . $id)
                 ->data
         );
     }
 
     /**
-     * Finds a specific Component based on the name
+     * Finds a specific Incident based on the name
      *
      * @param      string     $name   The name
      *
-     * @return     CheckItOnUs\Cachet\Component
+     * @return     CheckItOnUs\Cachet\Incident
      */
     public function findByName($name)
     {
         $pages = $this->getServer()
                     ->request()
-                    ->get(ComponentGroup::getApiRootPath());
+                    ->get(IncidentUpdate::getApiRootPath());
 
         foreach($pages as $page) {
             $component = $page->first(function($component) use($name) {
@@ -45,7 +45,7 @@ class ComponentGroupQuery extends BaseQuery
             });
 
             if($component !== null) {
-                return new ComponentGroup(
+                return new IncidentUpdate(
                     $this->getServer(),
                     (array)$component
                 );
@@ -64,14 +64,14 @@ class ComponentGroupQuery extends BaseQuery
     {
         $pages = $this->getServer()
                     ->request()
-                    ->get(ComponentGroup::getApiRootPath());
+                    ->get(IncidentUpdate::getApiRootPath());
 
         $components = collect();
 
         foreach($pages as $page) {
             foreach($page as $component) {
                 $components->push(
-                    new ComponentGroup(
+                    new IncidentUpdate(
                         $this->getServer(),
                         (array)$component
                     )

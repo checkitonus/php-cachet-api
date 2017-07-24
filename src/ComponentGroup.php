@@ -2,15 +2,34 @@
 
 namespace CheckItOnUs\Cachet;
 
-use ArrayAccess;
 use CheckItOnUs\Cachet\Server;
+use CheckItOnUs\Cachet\Component;
 use CheckItOnUs\Cachet\BaseApiComponent;
 use CheckItOnUs\Cachet\Traits\HasMetadata;
 use CheckItOnUs\Cachet\Builders\ComponentGroupQuery;
 
-class ComponentGroup extends BaseApiComponent implements ArrayAccess
+class ComponentGroup extends BaseApiComponent
 {
     use HasMetadata;
+
+    /**
+     * Hydrates a new instance of a Component
+     *
+     * @param      array  $metadata  The metadata
+     */
+    public function __construct(Server $server, array $metadata = [])
+    {
+        if(!empty($metadata['enabled_components'])) {
+            $components = collect($metadata['enabled_components'])
+                            ->map(function($component) {
+                                return new Component($component);
+                            });
+            unset($metadata['enabled_components']);
+        }
+
+        $this->setServer($server)
+            ->setMetadata($metadata);
+    }
 
     /**
      * Dictates the server that the Component relates to.

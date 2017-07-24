@@ -2,10 +2,11 @@
 
 namespace CheckItOnUs\Cachet;
 
+use ArrayAccess;
 use NotImplementedException;
 use CheckItOnUs\Cachet\Server;
 
-class BaseApiComponent
+abstract class BaseApiComponent implements ArrayAccess
 {
     /**
      * The server that the component is linked to.
@@ -133,7 +134,7 @@ class BaseApiComponent
      *
      * @return     string  The object's create URL
      */
-    public static function getApiCreateUrl()
+    public function getApiCreateUrl()
     {
         return static::buildUrl(':root-path');
     }
@@ -155,7 +156,7 @@ class BaseApiComponent
      *
      * @return     string  The object's delete URL
      */
-    public static function getApiDeleteUrl()
+    public function getApiDeleteUrl()
     {
         return static::buildUrl(':root-path/:id', [
             'id' => $this['id']

@@ -6,7 +6,7 @@ use CheckItOnUs\Cachet\Server;
 use CheckItOnUs\Cachet\Traits\HasMetadata;
 use CheckItOnUs\Cachet\Builders\IncidentQuery;
 
-class Incident
+class IncidentUpdate
 {
     use HasMetadata;
 
@@ -40,12 +40,48 @@ class Incident
     }
 
     /**
+     * The URL which will be used in order to create a new object
+     *
+     * @return     string  The object's create URL
+     */
+    public function getApiCreateUrl()
+    {
+        return static::buildUrl(':root-path');
+    }
+
+    /**
+     * The URL which will be used in order to update a new object
+     *
+     * @return     string  The object's update URL
+     */
+    public function getApiUpdateUrl()
+    {
+        return static::buildUrl(':root-path/:update', [
+            'incident' => $this['incident_id'],
+            'update' => $this['id']
+        ]);
+    }
+
+    /**
+     * The URL which will be used in order to delete a new object
+     *
+     * @return     string  The object's delete URL
+     */
+    public function getApiDeleteUrl()
+    {
+        return static::buildUrl(':root-path/:update', [
+            'incident' => $this['incident_id'],
+            'update' => $this['id']
+        ]);
+    }
+
+    /**
      * Gets the base path for the API
      *
      * @return     string  The api root path.
      */
     public static function getApiRootPath()
     {
-        return '/v1/incidents';
+        return '/v1/incidents/:incident/updates';
     }
 }

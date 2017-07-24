@@ -3,6 +3,7 @@
 namespace CheckItOnUs\Cachet;
 
 use CheckItOnUs\Cachet\Component;
+use CheckItOnUs\Cachet\ComponentGroup;
 use CheckItOnUs\Cachet\Request\GuzzleRequest;
 
 class Server
@@ -108,5 +109,11 @@ class Server
     {
         return Component::on($this)
                 ->all();
+    }
+
+    public function componentGroups()
+    {
+        return ComponentGroup::on($this)
+            ->all();
     }
 }

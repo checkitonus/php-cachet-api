@@ -4,27 +4,10 @@ namespace CheckItOnUs\Cachet\Builders;
 
 use CheckItOnUs\Cachet\Server;
 use CheckItOnUs\Cachet\Incident;
+use CheckItOnUs\Cachet\Builders\BaseQuery;
 
-class IncidentQuery
+class IncidentQuery extends BaseQuery
 {
-    /**
-     * The server that the component is linked to.
-     * 
-     * @var \CheckItOnUs\Cachet\Server
-     */
-    private $_server;
-
-    /**
-     * Sets the server which we will be looking at
-     *
-     * @param      \CheckItOnUs\Cachet\Server  $server  The server
-     */
-    public function onServer(Server $server)
-    {
-        $this->_server = $server;
-
-        return $this;
-    }
 
     /**
      * Finds a specific Incident by the ID
@@ -36,8 +19,8 @@ class IncidentQuery
     public function findById($id)
     {
         return new Incident(
-            $this->_server,
-            (array)$this->_server
+            $this->getServer(),
+            (array)$this->getServer()
                 ->request()
                 ->get(Incident::getApiRootPath() . '/' . $id)
                 ->data
@@ -53,7 +36,7 @@ class IncidentQuery
      */
     public function findByName($name)
     {
-        $pages = $this->_server
+        $pages = $this->getServer()
                     ->request()
                     ->get(Incident::getApiRootPath());
 
@@ -64,7 +47,7 @@ class IncidentQuery
 
             if($component !== null) {
                 return new Incident(
-                    $this->_server,
+                    $this->getServer(),
                     (array)$component
                 );
             }
@@ -80,7 +63,7 @@ class IncidentQuery
      */
     public function all()
     {
-        $pages = $this->_server
+        $pages = $this->getServer()
                     ->request()
                     ->get(Incident::getApiRootPath());
 
@@ -90,7 +73,7 @@ class IncidentQuery
             foreach($page as $component) {
                 $components->push(
                     new Incident(
-                        $this->_server,
+                        $this->getServer(),
                         (array)$component
                     )
                 );

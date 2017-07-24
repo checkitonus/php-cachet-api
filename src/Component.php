@@ -2,14 +2,13 @@
 
 namespace CheckItOnUs\Cachet;
 
-use ArrayAccess;
 use CheckItOnUs\Cachet\Server;
 use CheckItOnUs\Cachet\BaseApiComponent;
 use CheckItOnUs\Cachet\Traits\HasMetadata;
 use CheckItOnUs\Cachet\Traits\HasApiRoutes;
 use CheckItOnUs\Cachet\Builders\ComponentQuery;
 
-class Component extends BaseApiComponent implements ArrayAccess
+class Component extends BaseApiComponent
 {
     use HasMetadata;
 
@@ -25,7 +24,17 @@ class Component extends BaseApiComponent implements ArrayAccess
      */
     public function __construct(Server $server, array $metadata = [])
     {
-        $this->setStatus(self::OPERATIONAL);
+        // Try to translate the status
+        if(isset($metadata['status_name'])) {
+            // It existed, so translate into something we understand
+            $status = strtoupper($metadata['status_name']);
+            $this->setStatus(constant(self::class . '::' . $status));
+            unset($metadata['status_name']);
+        }
+        else {
+            // Otherwise default it to operational
+            $this->setStatus(self::OPERATIONAL);
+        }
 
         parent::__construct($server, $metadata);
     }
