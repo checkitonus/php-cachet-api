@@ -30,7 +30,7 @@ class Slug
                 $string[$key] = static::$slug->slugify($value);
             }
 
-            return implode('-', $string);
+            return implode('_', $string);
         }
     }
 }

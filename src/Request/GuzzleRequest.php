@@ -39,9 +39,9 @@ class GuzzleRequest implements WebRequest
     {
         $this->_configuration = $configuration;
 
-        if(isset($configuration['base-url'])) {
+        if($configuration->getBaseUrl()) {
             $this->_client = new Client([
-                'base_uri' => $configuration['base-url'],
+                'base_uri' => $configuration->getBaseUrl(),
             ]);
         }
 
@@ -137,7 +137,7 @@ class GuzzleRequest implements WebRequest
     {
         $headers = [
             'headers' => [
-                'X-Cachet-Token' => $this->_configuration['api-key'],
+                'X-Cachet-Token' => $this->_configuration->getApiKey(),
             ],
         ];
 
