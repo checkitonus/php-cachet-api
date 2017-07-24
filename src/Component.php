@@ -11,6 +11,11 @@ class Component implements ArrayAccess
 {
     use HasMetadata;
 
+    const OPERATIONAL = 1;
+    const PERFORMANCE_ISSUES = 2;
+    const PARTIAL_OUTAGE = 3;
+    const MAJOR_OUTAGE = 4;
+
     /**
      * The server that the component is linked to.
      * 
@@ -37,7 +42,8 @@ class Component implements ArrayAccess
     public function __construct(Server $server, array $metadata = [])
     {
         $this->setServer($server)
-            ->setMetadata($metadata);
+            ->setMetadata($metadata)
+            ->setStatus(self::OPERATIONAL);
     }
 
     /**
@@ -73,6 +79,35 @@ class Component implements ArrayAccess
         return $this->_server
                 ->request()
                 ->post('/v1/components', $this->getMetadata());
+    }
+
+    /**
+     * Updates the Component
+     *
+     * @return     mixed
+     */
+    public function update()
+    {
+        // Is there an ID stored?
+        if(!$this['id']) {
+            // There isn't, so we need to look it up
+            $component = self::on($this->_server)
+                            ->findByName($this['name']);
+
+            // Did we get it?
+            if($component && $component['id']) {
+                // We did, so we are good
+                $this['id'] = $component['id'];
+            }
+            else {
+                // We didn't, so fail
+                return false;
+            }
+        }
+
+        return $this->_server
+                ->request()
+                ->put('/v1/components/' . $this['id'], $this->getMetadata());
     }
 
     /**
