@@ -92,7 +92,7 @@ trait HasMetadata
      *
      * @return     array  The metadata.
      */
-    public function getMetadata()
+    private function getMetadata()
     {
         return $this->_metadata;
     }
