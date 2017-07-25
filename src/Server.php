@@ -117,7 +117,7 @@ class Server
     }
 
     /**
-     * { function_description }
+     * Returns a collection of components.
      *
      * @return     <type>  ( description_of_the_return_value )
      */

@@ -5,7 +5,8 @@
     "require": {
         "guzzlehttp/guzzle": "^6.3",
         "tightenco/collect": "^5.4",
-        "cocur/slugify": "^2.5"
+        "cocur/slugify": "^2.5",
+        "composer/semver": "^1.4"
     },
     "require-dev": {
         "phpunit/phpunit": "*",

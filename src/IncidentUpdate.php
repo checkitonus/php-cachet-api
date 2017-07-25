@@ -3,9 +3,11 @@
 namespace CheckItOnUs\Cachet;
 
 use CheckItOnUs\Cachet\Server;
+use Composer\Semver\Comparator;
 use CheckItOnUs\Cachet\BaseApiComponent;
 use CheckItOnUs\Cachet\Traits\HasMetadata;
 use CheckItOnUs\Cachet\Builders\IncidentQuery;
+use CheckItOnUs\Cachet\Exceptions\InvalidVersionException;
 
 class IncidentUpdate extends BaseApiComponent
 {
@@ -24,6 +26,10 @@ class IncidentUpdate extends BaseApiComponent
      */
     public static function on(Server $server)
     {
+        if(Comparator::lessThanOrEqualTo($server->version(), '2.4')) {
+            throw new InvalidVersionException('Server needs to be at least version 2.4 to use this feature.');
+        }
+
         return (new IncidentQuery())
             ->onServer($server);
     }
@@ -35,6 +41,10 @@ class IncidentUpdate extends BaseApiComponent
      */
     public function __construct(Server $server, array $metadata = [])
     {
+        if(Comparator::lessThanOrEqualTo($server->version(), '2.4')) {
+            throw new InvalidVersionException('Server needs to be at least version 2.4 to use this feature.');
+        }
+        
         $this->setStatus(self::INVESTIGATING);
 
         parent::__construct($server, $metadata);
