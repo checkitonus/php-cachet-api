@@ -1,6 +1,8 @@
 Cachet API
 =================
 
+[![CheckItOn.Us Logo](https://www.checkiton.us/img/mono-logo.png)](https://www.checkiton.us)
+
 [![Build Status](https://travis-ci.org/checkitonus/php-cachet-api.svg?branch=master)](https://travis-ci.org/checkitonus/php-cachet-api)
 
 Easy to use Cachet API implementation.
