@@ -2,6 +2,7 @@
 
 namespace CheckItOnUs\Cachet;
 
+use CheckItOnUs\Cachet\Incident;
 use CheckItOnUs\Cachet\Component;
 use CheckItOnUs\Cachet\ComponentGroup;
 use CheckItOnUs\Cachet\Request\GuzzleRequest;
@@ -119,7 +120,7 @@ class Server
     /**
      * Returns a collection of components.
      *
-     * @return     <type>  ( description_of_the_return_value )
+     * @return     Illuminate\Support\Collection
      */
     public function components()
     {
@@ -127,9 +128,25 @@ class Server
                 ->all();
     }
 
+    /**
+     * Retrieves a collection of Component Groups
+     *
+     * @return     Illuminate\Support\Collection
+     */
     public function componentGroups()
     {
         return ComponentGroup::on($this)
             ->all();
+    }
+
+    /**
+     * Retrieves a list of Incidents.
+     *
+     * @return     Illuminate\Support\Collection
+     */
+    public function incidents()
+    {
+        return Incident::on($this)
+                ->all();
     }
 }
