@@ -49,6 +49,12 @@ class PagedResponse implements Iterator
      */
     public $data;
 
+    /**
+     * Initializes the paged response
+     *
+     * @param      \CheckItOnUs\Cachet\Request\WebRequest  $webRequest  The web request
+     * @param      string                                  $url         The url
+     */
     public function __construct(WebRequest $webRequest, $url)
     {
         $this->_webRequest = $webRequest;
@@ -57,6 +63,11 @@ class PagedResponse implements Iterator
         $this->sendRequest();
     }
 
+    /**
+     * Retrieves the current element
+     *
+     * @return     mixed
+     */
     public function current()
     {
         // Do we already have the current page's data?
@@ -68,21 +79,37 @@ class PagedResponse implements Iterator
         return $this->sendRequest();
     }
 
+    /**
+     * Retrieves the current page that we are on
+     *
+     * @return     int
+     */
     public function key()
     {
         return $this->_page;
     }
 
+    /**
+     * Moves to the next page.
+     */
     public function next()
     {
         $this->_page++;
     }
 
+    /**
+     * Rewinds the list to the first element
+     */
     public function rewind()
     {
         $this->_page = 1;
     }
 
+    /**
+     * Determines if the current page is valid
+     *
+     * @return     boolean
+     */
     public function valid()
     {
         return $this->_page <= $this->_maximumPage;
@@ -97,21 +124,28 @@ class PagedResponse implements Iterator
     {
         $url = $this->_url;
 
+        // Is the current page greater than 1?
         if($this->_page > 1) {
+            // It is, so add the page number in
             $url .= '?page=' . $this->_page;
         }
 
+        // Get a raw request
         $response = $this->_webRequest->getRaw($url);
 
+        // Was there data?
         if($response === null) {
+            // There wasn't, so we are done
             return null;
         }
 
         // Is there pagination information?
         if(isset($response->meta, $response->meta->pagination)) {
+            // Grab the maximum total number of pages
             $this->_maximumPage = $response->meta->pagination->total_pages;
         }
 
+        // Return and cache the data
         return $this->data = $this->_pagedData[$this->_page] = is_array($response->data) ? collect($response->data) : $response->data;
     }
 }

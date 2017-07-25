@@ -9,7 +9,6 @@
         "composer/semver": "^1.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "*",
         "psy/psysh": "*"
     },
     "license": "MIT",
