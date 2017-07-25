@@ -1,1 +1,3 @@
-# php-cachet-api
+Cachet API
+=================
+
