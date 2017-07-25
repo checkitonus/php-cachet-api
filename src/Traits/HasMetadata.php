@@ -11,7 +11,7 @@ trait HasMetadata
      * 
      * @var array
      */
-    private $_metadata = [];
+    protected $_metadata = [];
 
     /**
      * Determines whether or not an offset exists
@@ -60,6 +60,13 @@ trait HasMetadata
 
     public function __call($name, $parameters)
     {
+        // Does the method we are calling exist?
+        if(method_exists($this, $name)) {
+            // It does, so just call it
+            return call_user_func_array([$this, $name], $parameters);
+        }
+
+        // It doesn't, so check if it's a getter/setter
         if($matches = preg_split('/(?=[A-Z])/', $name, -1, PREG_SPLIT_NO_EMPTY)) {
             $verb = array_shift($matches);
             $key = Slug::generate($matches);

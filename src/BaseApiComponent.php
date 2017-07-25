@@ -136,7 +136,7 @@ abstract class BaseApiComponent implements ArrayAccess
      */
     public function getApiCreateUrl()
     {
-        return static::buildUrl(':root-path');
+        return static::buildUrl('');
     }
 
     /**
@@ -146,7 +146,7 @@ abstract class BaseApiComponent implements ArrayAccess
      */
     public function getApiUpdateUrl()
     {
-        return static::buildUrl(':root-path/:id', [
+        return static::buildUrl(':id', [
             'id' => $this['id']
         ]);
     }
@@ -158,7 +158,7 @@ abstract class BaseApiComponent implements ArrayAccess
      */
     public function getApiDeleteUrl()
     {
-        return static::buildUrl(':root-path/:id', [
+        return static::buildUrl(':id', [
             'id' => $this['id']
         ]);
     }
@@ -171,12 +171,12 @@ abstract class BaseApiComponent implements ArrayAccess
      *
      * @return     string  The url.
      */
-    private static function buildUrl($url, array $values)
+    protected static function buildUrl($url, array $values = [])
     {
-        $values['root-path'] = static::getApiRootPath();
+        $url = static::getApiRootPath() . $url;
 
         foreach($values as $key => $value) {
-            $url = str_replace(':' . $key, $value, $url);
+            $url = str_ireplace(':' . $key, $value, $url);
         }
 
         return $url;

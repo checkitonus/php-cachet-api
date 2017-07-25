@@ -3,10 +3,11 @@
 namespace CheckItOnUs\Cachet;
 
 use CheckItOnUs\Cachet\Server;
+use CheckItOnUs\Cachet\BaseApiComponent;
 use CheckItOnUs\Cachet\Traits\HasMetadata;
 use CheckItOnUs\Cachet\Builders\IncidentQuery;
 
-class Incident
+class Incident extends BaseApiComponent
 {
     use HasMetadata;
 
@@ -46,6 +47,6 @@ class Incident
      */
     public static function getApiRootPath()
     {
-        return '/v1/incidents';
+        return '/v1/incidents/';
     }
 }

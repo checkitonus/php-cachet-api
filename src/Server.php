@@ -90,7 +90,8 @@ class Server
     public function ping()
     {
         return $this->request()
-                ->get('/v1/ping');
+                ->get('/v1/ping')
+                ->data;
     }
 
     /**
@@ -102,7 +103,8 @@ class Server
     public function version()
     {
         return $this->request()
-                ->get('/v1/version');    
+                ->get('/v1/version')
+                ->data;    
     }
 
     public function components()

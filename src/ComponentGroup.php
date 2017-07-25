@@ -48,6 +48,6 @@ class ComponentGroup extends BaseApiComponent
      */
     public static function getApiRootPath()
     {
-        return '/v1/components/groups';
+        return '/v1/components/groups/';
     }
 }

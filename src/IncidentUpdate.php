@@ -3,10 +3,11 @@
 namespace CheckItOnUs\Cachet;
 
 use CheckItOnUs\Cachet\Server;
+use CheckItOnUs\Cachet\BaseApiComponent;
 use CheckItOnUs\Cachet\Traits\HasMetadata;
 use CheckItOnUs\Cachet\Builders\IncidentQuery;
 
-class IncidentUpdate
+class IncidentUpdate extends BaseApiComponent
 {
     use HasMetadata;
 
@@ -46,7 +47,9 @@ class IncidentUpdate
      */
     public function getApiCreateUrl()
     {
-        return static::buildUrl(':root-path');
+        return static::buildUrl('', [
+            'incident' => $this['incident_id'],
+        ]);
     }
 
     /**
@@ -56,7 +59,7 @@ class IncidentUpdate
      */
     public function getApiUpdateUrl()
     {
-        return static::buildUrl(':root-path/:update', [
+        return static::buildUrl(':update', [
             'incident' => $this['incident_id'],
             'update' => $this['id']
         ]);
@@ -69,7 +72,7 @@ class IncidentUpdate
      */
     public function getApiDeleteUrl()
     {
-        return static::buildUrl(':root-path/:update', [
+        return static::buildUrl(':update', [
             'incident' => $this['incident_id'],
             'update' => $this['id']
         ]);
