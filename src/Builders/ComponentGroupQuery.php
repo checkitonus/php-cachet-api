@@ -40,14 +40,14 @@ class ComponentGroupQuery extends BaseQuery
                     ->get(ComponentGroup::getApiRootPath());
 
         foreach($pages as $page) {
-            $component = $page->first(function($component) use($name) {
-                return $component->name == $name;
+            $componentGroup = $page->first(function($componentGroup) use($name) {
+                return $componentGroup->name == $name;
             });
 
-            if($component !== null) {
+            if($componentGroup !== null) {
                 return new ComponentGroup(
                     $this->getServer(),
-                    (array)$component
+                    (array)$componentGroup
                 );
             }
         }
@@ -66,19 +66,19 @@ class ComponentGroupQuery extends BaseQuery
                     ->request()
                     ->get(ComponentGroup::getApiRootPath());
 
-        $components = collect();
+        $componentGroups = collect();
 
         foreach($pages as $page) {
-            foreach($page as $component) {
-                $components->push(
+            foreach($page as $componentGroup) {
+                $componentGroups->push(
                     new ComponentGroup(
                         $this->getServer(),
-                        (array)$component
+                        (array)$componentGroup
                     )
                 );
             }
         }
 
-        return $components;
+        return $componentGroups;
     }
 }

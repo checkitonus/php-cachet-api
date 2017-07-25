@@ -23,6 +23,11 @@ class Server
     private $_webRequest;
 
     /**
+     * The version of the server
+     */
+    private $_version;
+
+    /**
      * Initializes the Cachet component
      *
      * @param      $configuration  The configuration
@@ -102,11 +107,20 @@ class Server
      */
     public function version()
     {
-        return $this->request()
+        if($this->_version) {
+            return $this->_version;
+        }
+
+        return $this->_version = $this->request()
                 ->get('/v1/version')
                 ->data;    
     }
 
+    /**
+     * { function_description }
+     *
+     * @return     <type>  ( description_of_the_return_value )
+     */
     public function components()
     {
         return Component::on($this)

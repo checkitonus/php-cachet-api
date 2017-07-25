@@ -40,14 +40,14 @@ class IncidentUpdateQuery
                     ->get(IncidentUpdate::getApiRootPath());
 
         foreach($pages as $page) {
-            $component = $page->first(function($component) use($name) {
-                return $component->name == $name;
+            $incidentUpdate = $page->first(function($incidentUpdate) use($name) {
+                return $incidentUpdate->name == $name;
             });
 
-            if($component !== null) {
+            if($incidentUpdate !== null) {
                 return new IncidentUpdate(
                     $this->getServer(),
-                    (array)$component
+                    (array)$incidentUpdate
                 );
             }
         }
@@ -66,19 +66,19 @@ class IncidentUpdateQuery
                     ->request()
                     ->get(IncidentUpdate::getApiRootPath());
 
-        $components = collect();
+        $incidentUpdates = collect();
 
         foreach($pages as $page) {
-            foreach($page as $component) {
-                $components->push(
+            foreach($page as $incidentUpdate) {
+                $incidentUpdates->push(
                     new IncidentUpdate(
                         $this->getServer(),
-                        (array)$component
+                        (array)$incidentUpdate
                     )
                 );
             }
         }
 
-        return $components;
+        return $incidentUpdates;
     }
 }

@@ -41,14 +41,14 @@ class IncidentQuery extends BaseQuery
                     ->get(Incident::getApiRootPath());
 
         foreach($pages as $page) {
-            $component = $page->first(function($component) use($name) {
-                return $component->name == $name;
+            $incident = $page->first(function($incident) use($name) {
+                return $incident->name == $name;
             });
 
-            if($component !== null) {
+            if($incident !== null) {
                 return new Incident(
                     $this->getServer(),
-                    (array)$component
+                    (array)$incident
                 );
             }
         }
@@ -67,19 +67,19 @@ class IncidentQuery extends BaseQuery
                     ->request()
                     ->get(Incident::getApiRootPath());
 
-        $components = collect();
+        $incidents = collect();
 
         foreach($pages as $page) {
-            foreach($page as $component) {
-                $components->push(
+            foreach($page as $incident) {
+                $incidents->push(
                     new Incident(
                         $this->getServer(),
-                        (array)$component
+                        (array)$incident
                     )
                 );
             }
         }
 
-        return $components;
+        return $incidents;
     }
 }
