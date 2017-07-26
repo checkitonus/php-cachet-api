@@ -3,6 +3,7 @@
 namespace CheckItOnUs\Cachet;
 
 use ArrayAccess;
+use Carbon\Carbon;
 use NotImplementedException;
 use CheckItOnUs\Cachet\Server;
 
@@ -57,6 +58,16 @@ abstract class BaseApiComponent implements ArrayAccess
     public function getServer()
     {
         return $this->_server;
+    }
+
+    /**
+     * Gets the created at.
+     *
+     * @return     <type>  The created at.
+     */
+    public function getCreatedAt()
+    {
+        return empty($this->_metadata['created_at']) ? null : Carbon::parse($this->_metadata['created_at']);
     }
 
     /**

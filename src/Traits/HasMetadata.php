@@ -3,6 +3,7 @@
 namespace CheckItOnUs\Cachet\Traits;
 
 use CheckItOnUs\Cachet\Helpers\Slug;
+use CheckItOnUs\Cachet\Helpers\Text;
 
 trait HasMetadata
 {
@@ -34,7 +35,8 @@ trait HasMetadata
      */
     public function offsetGet($offset)
     {
-        return isset($this->_metadata[$offset]) ? $this->_metadata[$offset] : null;
+        $method = 'get' . Text::toCamelCase($offset);
+        return $this->$method();
     }
 
     /**
@@ -45,7 +47,8 @@ trait HasMetadata
      */
     public function offsetSet($offset, $value)
     {
-        $this->_metadata[$offset] = $value;
+        $method = 'set' . Text::toCamelCase($offset);
+        $this->$method($value);
     }
 
     /**
@@ -72,10 +75,10 @@ trait HasMetadata
             $key = Slug::generate($matches);
 
             if($verb == 'get') {
-                return $this[$key];
+                return $this->_metadata[$key];
             }
             else if($verb == 'set') {
-                $this[$key] = $parameters[0];
+                $this->_metadata[$key] = $parameters[0];
                 return $this;
             }
         }
