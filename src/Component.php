@@ -47,7 +47,7 @@ class Component extends BaseApiComponent
 
     public static function getApiRootPath()
     {
-        return '/v1/components/';
+        return '/v1/components';
     }
 
     public function getGroup()
