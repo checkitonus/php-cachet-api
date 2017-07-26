@@ -47,6 +47,6 @@ class Incident extends BaseApiComponent
      */
     public static function getApiRootPath()
     {
-        return '/v1/incidents/';
+        return '/v1/incidents';
     }
 }

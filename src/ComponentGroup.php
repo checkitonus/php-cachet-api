@@ -20,9 +20,9 @@ class ComponentGroup extends BaseApiComponent
     public function __construct(Server $server, array $metadata = [])
     {
         if(!empty($metadata['enabled_components'])) {
-            $components = collect($metadata['enabled_components'])
+            $metadata['components'] = collect($metadata['enabled_components'])
                             ->map(function($component) use($server) {
-                                return new Component($server, $component);
+                                return new Component($server, (array)$component);
                             });
             unset($metadata['enabled_components']);
         }
@@ -48,6 +48,6 @@ class ComponentGroup extends BaseApiComponent
      */
     public static function getApiRootPath()
     {
-        return '/v1/components/groups/';
+        return '/v1/components/groups';
     }
 }

@@ -3,6 +3,7 @@
 namespace CheckItOnUs\Cachet;
 
 use CheckItOnUs\Cachet\Server;
+use CheckItOnUs\Cachet\ComponentGroup;
 use CheckItOnUs\Cachet\BaseApiComponent;
 use CheckItOnUs\Cachet\Traits\HasMetadata;
 use CheckItOnUs\Cachet\Traits\HasApiRoutes;
@@ -24,17 +25,11 @@ class Component extends BaseApiComponent
      */
     public function __construct(Server $server, array $metadata = [])
     {
-        // Try to translate the status
-        if(isset($metadata['status_name'])) {
-            // It existed, so translate into something we understand
-            $status = strtoupper($metadata['status_name']);
-            $this->setStatus(constant(self::class . '::' . $status));
-            unset($metadata['status_name']);
-        }
-        else {
-            // Otherwise default it to operational
-            $this->setStatus(self::OPERATIONAL);
-        }
+        $this->setStatus($this->deriveInitialStatus($metadata));
+
+        $metadata = array_filter($metadata, function($key) {
+            return !in_array($key, ['status_name']);
+        }, ARRAY_FILTER_USE_KEY);
 
         parent::__construct($server, $metadata);
     }
@@ -53,5 +48,29 @@ class Component extends BaseApiComponent
     public static function getApiRootPath()
     {
         return '/v1/components/';
+    }
+
+    public function getGroup()
+    {
+        if(empty($this['group_id'])) {
+            return null;
+        }
+
+        return ComponentGroup::on($this->getServer())
+                ->findById($this['group_id']);
+    }
+
+    private function deriveInitialStatus($metadata)
+    {
+        // Try to translate the status
+        if(isset($metadata['status_name'])) {
+            // It existed, so translate into something we understand
+            $status = strtoupper($metadata['status_name']);
+            return constant(self::class . '::' . str_replace(' ', '_', $status));
+        }
+        else {
+            // Otherwise default it to operational
+            return self::OPERATIONAL;
+        }
     }
 }

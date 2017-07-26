@@ -50,6 +50,16 @@ abstract class BaseApiComponent implements ArrayAccess
     }
 
     /**
+     * Retrieves the server that the object is related to.
+     *
+     * @return     CheckItOnUs\Cachet\Server  The server.
+     */
+    public function getServer()
+    {
+        return $this->_server;
+    }
+
+    /**
      * Creates a new component
      *
      * @return     stdClass
@@ -146,7 +156,7 @@ abstract class BaseApiComponent implements ArrayAccess
      */
     public function getApiUpdateUrl()
     {
-        return static::buildUrl(':id', [
+        return static::buildUrl('/:id', [
             'id' => $this['id']
         ]);
     }
@@ -158,7 +168,7 @@ abstract class BaseApiComponent implements ArrayAccess
      */
     public function getApiDeleteUrl()
     {
-        return static::buildUrl(':id', [
+        return static::buildUrl('/:id', [
             'id' => $this['id']
         ]);
     }
