@@ -47,7 +47,6 @@ class Template implements ArrayAccess, ApiRequest
 
     public function setVariables(array $value)
     {
-        var_dump('set');
         $this->_metadata['variables'] = new VariableCollection($value);
         return $this;
     }
