@@ -29,7 +29,7 @@ class ComponentGroup extends BaseApiComponent
     {
         return '/v1/components/groups';
     }
-
+    
     /**
      * Retrieves a collection of Components
      *

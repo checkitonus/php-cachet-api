@@ -7,8 +7,9 @@ use NotImplementedException;
 use CheckItOnUs\Cachet\Server;
 use CheckItOnUs\Cachet\Traits\HasDates;
 use CheckItOnUs\Cachet\Traits\HasMetadata;
+use CheckItOnUs\Cachet\ApiRequest;
 
-abstract class BaseApiComponent implements ArrayAccess
+abstract class BaseApiComponent implements ArrayAccess, ApiRequest
 {
     use HasDates
         ,HasMetadata;
@@ -65,6 +66,42 @@ abstract class BaseApiComponent implements ArrayAccess
     }
 
     /**
+     * Converts the object to a format which can be used when making an API 
+     * request.
+     * 
+     * @return mixed
+     */
+    public function toApi()
+    {
+        $metadata = $this->getMetadata();
+
+        $apiRequest = [];
+
+        foreach($metadata as $key => $value) {
+            // Do we have a special mutator for the API requests?
+            if(is_a($value, ApiRequest::class)) {
+                // We do, so adjust
+                $value = $value->toApi();
+            }
+            
+            // Is the value an array?
+            if(!is_array($value)) {
+                // It isn't, so make it one
+                $value = [
+                    $key => $value
+                ];
+            }
+
+            foreach($value as $actual => $data) {
+                $apiRequest[$actual] = $data;
+            }
+        }
+
+        return $apiRequest;
+    }
+
+
+    /**
      * Creates a new component
      *
      * @return     stdClass
@@ -73,7 +110,7 @@ abstract class BaseApiComponent implements ArrayAccess
     {
         return $this->_server
                 ->request()
-                ->post($this->getApiCreateUrl(), $this->getMetadata());
+                ->post($this->getApiCreateUrl(), $this->toApi());
     }
 
     /**
@@ -102,7 +139,7 @@ abstract class BaseApiComponent implements ArrayAccess
 
         return $this->_server
                 ->request()
-                ->put($this->getApiUpdateUrl($this['id']), $this->getMetadata());
+                ->put($this->getApiUpdateUrl($this['id']), $this->toApi());
     }
 
     /**

@@ -33,7 +33,8 @@ class Incident extends BaseApiComponent
      */
     public function __construct(Server $server, array $metadata = [])
     {
-        $this->setStatus(self::INVESTIGATING);
+        $this->setStatus(self::INVESTIGATING)
+            ->setNotify(true);
 
         parent::__construct($server, $metadata);
     }

@@ -2,7 +2,7 @@
 
 namespace CheckItOnUs\Cachet\Traits;
 
-use Carbon\Carbon;
+use CheckItOnUs\Cachet\Decorators\Date;
 
 trait HasDates
 {
@@ -13,7 +13,7 @@ trait HasDates
      */
     public function setCreatedAt($value)
     {
-        $this->_metadata['created_at'] = empty($value) ? null : Carbon::parse($value);
+        $this->_metadata['created_at'] = empty($value) ? null : Date::parse($value);
     }
 
     /**
@@ -23,7 +23,7 @@ trait HasDates
      */
     public function setUpdatedAt($value)
     {
-        $this->_metadata['updated_at'] = empty($value) ? null : Carbon::parse($value);
+        $this->_metadata['updated_at'] = empty($value) ? null : Date::parse($value);
     }
 
 }

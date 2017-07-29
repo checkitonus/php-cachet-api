@@ -4,6 +4,7 @@ namespace CheckItOnUs\Cachet;
 
 use CheckItOnUs\Cachet\Server;
 use CheckItOnUs\Cachet\ComponentGroup;
+use CheckItOnUs\Cachet\Decorators\Tags;
 use CheckItOnUs\Cachet\BaseApiComponent;
 use CheckItOnUs\Cachet\Traits\HasApiRoutes;
 use CheckItOnUs\Cachet\Builders\ComponentQuery;
@@ -60,7 +61,7 @@ class Component extends BaseApiComponent
      */
     public function setTags($value)
     {
-        $this->_metadata['tags'] = collect(array_filter((array)$value));
+        $this->_metadata['tags'] = new Tags(array_filter((array)$value));
         return $this;
     }
 
@@ -71,7 +72,7 @@ class Component extends BaseApiComponent
      */
     public function getTags()
     {
-        return empty($this->_metadata['tags']) ? collect() : $this->_metadata['tags'];
+        return empty($this->_metadata['tags']) ? new Tags() : $this->_metadata['tags'];
     }
 
     /**
