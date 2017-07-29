@@ -75,7 +75,7 @@ trait HasMetadata
             $key = Slug::generate($matches);
 
             if($verb == 'get') {
-                return $this->_metadata[$key];
+                return isset($this->_metadata[$key]) ? $this->_metadata[$key] : null;
             }
             else if($verb == 'set') {
                 $this->_metadata[$key] = $parameters[0];

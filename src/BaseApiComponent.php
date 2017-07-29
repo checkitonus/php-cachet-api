@@ -78,6 +78,10 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
         $apiRequest = [];
 
         foreach($metadata as $key => $value) {
+            if(empty($value)) {
+                continue;
+            }
+
             // Do we have a special mutator for the API requests?
             if(is_a($value, ApiRequest::class)) {
                 // We do, so adjust
