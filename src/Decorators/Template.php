@@ -36,6 +36,11 @@ class Template implements ArrayAccess, ApiRequest
         return $this['variables'];
     }
 
+    /**
+     * Retrieves an array of variables to be sent to the API
+     *
+     * @return     array  The variables.
+     */
     public function getVariables()
     {
         if(!isset($this->_metadata['variables'])) {
@@ -45,12 +50,27 @@ class Template implements ArrayAccess, ApiRequest
         return $this->_metadata['variables'];
     }
 
+    /**
+     * Sets the list of template variables
+     *
+     * @param      array   $value  The value
+     *
+     * @return     \CheckItOnUs\Cachet\Decorators\Template
+     */
     public function setVariables(array $value)
     {
         $this->_metadata['variables'] = new VariableCollection($value);
         return $this;
     }
 
+    /**
+     * Adds a specific variable to the template.
+     *
+     * @param      string  $key    The key
+     * @param      mixed  $value  The value
+     *
+     * @return     \CheckItOnUs\Cachet\Decorators\Template
+     */
     public function addVariable($key, $value)
     {
         $this['variables'][$key] = $value;
