@@ -93,7 +93,10 @@ trait HasMetadata
      */
     private function setMetadata(array $metadata)
     {
-        $this->_metadata = $metadata;
+        foreach($metadata as $key => $value) {
+            $this[$key] = $value;
+        }
+
         return $this;
     }
 

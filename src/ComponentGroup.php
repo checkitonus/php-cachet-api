@@ -5,31 +5,10 @@ namespace CheckItOnUs\Cachet;
 use CheckItOnUs\Cachet\Server;
 use CheckItOnUs\Cachet\Component;
 use CheckItOnUs\Cachet\BaseApiComponent;
-use CheckItOnUs\Cachet\Traits\HasMetadata;
 use CheckItOnUs\Cachet\Builders\ComponentGroupQuery;
 
 class ComponentGroup extends BaseApiComponent
 {
-    use HasMetadata;
-
-    /**
-     * Hydrates a new instance of a Component
-     *
-     * @param      array  $metadata  The metadata
-     */
-    public function __construct(Server $server, array $metadata = [])
-    {
-        if(!empty($metadata['enabled_components'])) {
-            $metadata['components'] = collect($metadata['enabled_components'])
-                            ->map(function($component) use($server) {
-                                return new Component($server, (array)$component);
-                            });
-            unset($metadata['enabled_components']);
-        }
-
-        parent::__construct($server, $metadata);
-    }
-
     /**
      * Dictates the server that the Component relates to.
      *
@@ -49,5 +28,31 @@ class ComponentGroup extends BaseApiComponent
     public static function getApiRootPath()
     {
         return '/v1/components/groups';
+    }
+
+    /**
+     * Retrieves a collection of Components
+     *
+     * @return     Illuminate\Support\Collection  The components.
+     */
+    public function getComponents()
+    {
+        return $this['enabled_components'];
+    }
+
+    /**
+     * Sets the list of enabled components.
+     *
+     * @param      array   $value  The value
+     *
+     * @return     CheckItOnUs\Cachet\ComponentGroup
+     */
+    public function setEnabledComponents(array $value)
+    {
+        $this->_metadata['enabled_components'] = collect($value)
+                                ->map(function($component) {
+                                    return new Component($this->getServer(), (array)$component);
+                                });
+        return $this;
     }
 }

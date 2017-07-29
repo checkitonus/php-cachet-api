@@ -4,12 +4,10 @@ namespace CheckItOnUs\Cachet;
 
 use CheckItOnUs\Cachet\Server;
 use CheckItOnUs\Cachet\BaseApiComponent;
-use CheckItOnUs\Cachet\Traits\HasMetadata;
 use CheckItOnUs\Cachet\Builders\IncidentQuery;
 
 class Incident extends BaseApiComponent
 {
-    use HasMetadata;
 
     const SCHEDULED = 0;
     const INVESTIGATING = 1;

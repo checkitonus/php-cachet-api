@@ -5,14 +5,11 @@ namespace CheckItOnUs\Cachet;
 use CheckItOnUs\Cachet\Server;
 use Composer\Semver\Comparator;
 use CheckItOnUs\Cachet\BaseApiComponent;
-use CheckItOnUs\Cachet\Traits\HasMetadata;
 use CheckItOnUs\Cachet\Builders\IncidentQuery;
 use CheckItOnUs\Cachet\Exceptions\InvalidVersionException;
 
 class IncidentUpdate extends BaseApiComponent
 {
-    use HasMetadata;
-
     const SCHEDULED = 0;
     const INVESTIGATING = 1;
     const IDENTIFIED = 1;

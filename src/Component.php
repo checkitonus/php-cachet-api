@@ -5,34 +5,15 @@ namespace CheckItOnUs\Cachet;
 use CheckItOnUs\Cachet\Server;
 use CheckItOnUs\Cachet\ComponentGroup;
 use CheckItOnUs\Cachet\BaseApiComponent;
-use CheckItOnUs\Cachet\Traits\HasMetadata;
 use CheckItOnUs\Cachet\Traits\HasApiRoutes;
 use CheckItOnUs\Cachet\Builders\ComponentQuery;
 
 class Component extends BaseApiComponent
 {
-    use HasMetadata;
-
     const OPERATIONAL = 1;
     const PERFORMANCE_ISSUES = 2;
     const PARTIAL_OUTAGE = 3;
     const MAJOR_OUTAGE = 4;
-
-    /**
-     * Hydrates a new instance of a Component
-     *
-     * @param      array  $metadata  The metadata
-     */
-    public function __construct(Server $server, array $metadata = [])
-    {
-        $this->setStatus($this->deriveInitialStatus($metadata));
-
-        $metadata = array_filter($metadata, function($key) {
-            return !in_array($key, ['status_name']);
-        }, ARRAY_FILTER_USE_KEY);
-
-        parent::__construct($server, $metadata);
-    }
 
     /**
      * Dictates the server that the Component relates to.
@@ -60,17 +41,68 @@ class Component extends BaseApiComponent
                 ->findById($this['group_id']);
     }
 
-    private function deriveInitialStatus($metadata)
+    /**
+     * Retrieves the current status code of the component
+     *
+     * @return     int  The status.
+     */
+    public function getStatus()
+    {
+        return isset($this->_metadata['status']) ? $this->_metadata['status'] : self::OPERATIONAL;
+    }
+
+    /**
+     * Sets the tags.
+     *
+     * @param      object|array  $value  The value
+     *
+     * @return     CheckItOnUs\Cachet\Component
+     */
+    public function setTags($value)
+    {
+        $this->_metadata['tags'] = collect(array_filter((array)$value));
+        return $this;
+    }
+
+    /**
+     * Gets the tags.
+     *
+     * @return     Illuminate\Support\Collection  The tags.
+     */
+    public function getTags()
+    {
+        return empty($this->_metadata['tags']) ? collect() : $this->_metadata['tags'];
+    }
+
+    /**
+     * Adds a tag to the list.
+     *
+     * @param      string  $value  The value
+     *
+     * @return     CheckItOnUs\Cachet\Component
+     */
+    public function addTag($value)
+    {
+        $this['tags']->push($value);
+        return $this;
+    }
+
+    /**
+     * Converts the status name field into the status code which is required.
+     *
+     * @param      string  $value  The value
+     *
+     * @return     CheckItOnUs\Cachet\Component
+     */
+    public function setStatusName($value)
     {
         // Try to translate the status
-        if(isset($metadata['status_name'])) {
+        if(isset($value)) {
             // It existed, so translate into something we understand
-            $status = strtoupper($metadata['status_name']);
-            return constant(self::class . '::' . str_replace(' ', '_', $status));
+            $status = strtoupper($value);
+            $this['status'] = constant(self::class . '::' . str_replace(' ', '_', $status));
         }
-        else {
-            // Otherwise default it to operational
-            return self::OPERATIONAL;
-        }
+
+        return $this;
     }
 }
