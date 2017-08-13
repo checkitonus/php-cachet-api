@@ -147,6 +147,20 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
     }
 
     /**
+     * Saves the object (either creates or updates)
+     *
+     * @return     stdClass
+     */
+    public function save()
+    {
+        if($this['id']) {
+            return $this->update();
+        }
+
+        return $this->create();
+    }
+
+    /**
      * Processes the deletion of a component.
      *
      * @return     stdClass
