@@ -14,6 +14,8 @@ trait HasDates
     public function setCreatedAt($value)
     {
         $this->_metadata['created_at'] = empty($value) ? null : Date::parse($value);
+
+        return $this;
     }
 
     /**
