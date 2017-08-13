@@ -85,7 +85,7 @@ $server = new Server([
 ]);
 
 // Fluent API
-$component = new Component($server)
+$component = (new Component($server))
                 ->setName('Name Here')
                 ->setStatus(Component::OPERATIONAL)
                 ->create();

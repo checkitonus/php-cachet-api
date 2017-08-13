@@ -17,7 +17,7 @@ class Incident extends BaseApiComponent
     const FIXED = 4;
 
     /**
-     * Dictates the server that the Component relates to.
+     * Dictates the server that the Incident relates to.
      *
      * @param      \CheckItOnUs\Cachet\Server  $server  The server
      */
@@ -28,7 +28,7 @@ class Incident extends BaseApiComponent
     }
 
     /**
-     * Hydrates a new instance of a Component
+     * Hydrates a new instance of an Incident
      *
      * @param      array  $metadata  The metadata
      */
