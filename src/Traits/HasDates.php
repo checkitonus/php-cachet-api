@@ -26,6 +26,8 @@ trait HasDates
     public function setUpdatedAt($value)
     {
         $this->_metadata['updated_at'] = empty($value) ? null : Date::parse($value);
+
+        return $this;
     }
 
 }
