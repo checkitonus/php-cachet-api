@@ -10,7 +10,7 @@ use CheckItOnUs\Cachet\Builders\ComponentGroupQuery;
 class ComponentGroup extends BaseApiComponent
 {
     /**
-     * Dictates the server that the Component relates to.
+     * Dictates the server that the ComponentGroup relates to.
      *
      * @param      \CheckItOnUs\Cachet\Server  $server  The server
      */
