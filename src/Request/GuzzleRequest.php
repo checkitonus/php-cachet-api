@@ -10,7 +10,7 @@ use CheckItOnUs\Cachet\Request\PagedResponse;
 class GuzzleRequest implements WebRequest
 {
     /**
-     * The 
+     * The base guzzle HTTP client.
      */
     private $_client;
 
