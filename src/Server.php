@@ -6,6 +6,7 @@ use CheckItOnUs\Cachet\Incident;
 use CheckItOnUs\Cachet\Component;
 use CheckItOnUs\Cachet\ComponentGroup;
 use CheckItOnUs\Cachet\Request\GuzzleRequest;
+use CheckItOnUs\Cachet\Request\SpoofedVerbRequest;
 
 class Server
 {
@@ -43,7 +44,7 @@ class Server
         }
 
         if(!is_a($webRequest, WebRequest::class)) {
-            $webRequest = (new GuzzleRequest())
+            $webRequest = ($this->_configuration['spoof'] ? new SpoofedVerbRequest() : new GuzzleRequest())
                             ->setConfiguration($this->_configuration);
         }
 
