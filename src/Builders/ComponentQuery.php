@@ -40,6 +40,10 @@ class ComponentQuery extends BaseQuery
                     ->get(Component::getApiRootPath());
 
         foreach($pages as $page) {
+            if($page === null) {
+                return null;
+            }
+
             $component = $page->first(function($component) use($name) {
                 return $component->name == $name;
             });
