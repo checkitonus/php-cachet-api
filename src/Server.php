@@ -2,48 +2,44 @@
 
 namespace CheckItOnUs\Cachet;
 
-use CheckItOnUs\Cachet\Incident;
-use CheckItOnUs\Cachet\Component;
-use CheckItOnUs\Cachet\ComponentGroup;
 use CheckItOnUs\Cachet\Request\GuzzleRequest;
 use CheckItOnUs\Cachet\Request\SpoofedVerbRequest;
 
 class Server
 {
     /**
-     * The configuration object
+     * The configuration object.
      *
-     * @var        \CheckItOnUs\Cachet\Configuration
+     * @var \CheckItOnUs\Cachet\Configuration
      */
     private $_configuration;
 
     /**
-     * The object which will be used for any web requests
-     * 
+     * The object which will be used for any web requests.
+     *
      * @var \CheckItOnUs\Cachet\Request\WebRequest
      */
     private $_webRequest;
 
     /**
-     * The version of the server
+     * The version of the server.
      */
     private $_version;
 
     /**
-     * Initializes the Cachet component
+     * Initializes the Cachet component.
      *
-     * @param      $configuration  The configuration
+     * @param   $configuration The configuration
      */
     public function __construct($configuration = null, $webRequest = null)
     {
-        if(is_a($configuration, Configuration::class)) {
-            $this->_configuration = $configuration;    
-        }
-        else if(!empty($configuration) && is_array($configuration)) {
+        if (is_a($configuration, Configuration::class)) {
+            $this->_configuration = $configuration;
+        } elseif (!empty($configuration) && is_array($configuration)) {
             $this->_configuration = new Configuration($configuration);
         }
 
-        if(!is_a($webRequest, WebRequest::class)) {
+        if (!is_a($webRequest, WebRequest::class)) {
             $webRequest = ($this->_configuration['spoof'] ? new SpoofedVerbRequest() : new GuzzleRequest())
                             ->setConfiguration($this->_configuration);
         }
@@ -54,9 +50,9 @@ class Server
     /**
      * Sets the configuration.
      *
-     * @param      Configuration  $value  The value
+     * @param Configuration $value The value
      *
-     * @return     \CheckItOnUs\Cachet\Cachet
+     * @return \CheckItOnUs\Cachet\Cachet
      */
     public function setConfiguration(Configuration $value)
     {
@@ -69,9 +65,9 @@ class Server
     }
 
     /**
-     * Retrieves the configuration object
+     * Retrieves the configuration object.
      *
-     * @return     \CheckItOnUs\Cachet\Configuration  The configuration.
+     * @return \CheckItOnUs\Cachet\Configuration The configuration.
      */
     public function getConfiguration()
     {
@@ -79,7 +75,7 @@ class Server
     }
 
     /**
-     * Retrieves the web request object
+     * Retrieves the web request object.
      *
      * @return \CheckItOnUs\Cachet\Request\WebRequest
      */
@@ -89,10 +85,11 @@ class Server
     }
 
     /**
-     * Sends a ping request to the server (verifies connectivity to the server)
+     * Sends a ping request to the server (verifies connectivity to the server).
      *
      * @ref https://docs.cachethq.io/reference#ping
-     * @return     stdClass
+     *
+     * @return stdClass
      */
     public function ping()
     {
@@ -102,26 +99,27 @@ class Server
     }
 
     /**
-     * Gets the version of Cachet currently installed on the server
+     * Gets the version of Cachet currently installed on the server.
      *
      * @ref https://docs.cachethq.io/reference#version
-     * @return     stdClass 
+     *
+     * @return stdClass
      */
     public function version()
     {
-        if($this->_version) {
+        if ($this->_version) {
             return $this->_version;
         }
 
         return $this->_version = $this->request()
                 ->get('/v1/version')
-                ->data;    
+                ->data;
     }
 
     /**
      * Returns a collection of components.
      *
-     * @return     Illuminate\Support\Collection
+     * @return Illuminate\Support\Collection
      */
     public function components()
     {
@@ -130,9 +128,9 @@ class Server
     }
 
     /**
-     * Retrieves a collection of Component Groups
+     * Retrieves a collection of Component Groups.
      *
-     * @return     Illuminate\Support\Collection
+     * @return Illuminate\Support\Collection
      */
     public function componentGroups()
     {
@@ -143,7 +141,7 @@ class Server
     /**
      * Retrieves a list of Incidents.
      *
-     * @return     Illuminate\Support\Collection
+     * @return Illuminate\Support\Collection
      */
     public function incidents()
     {

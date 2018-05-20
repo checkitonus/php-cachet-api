@@ -3,11 +3,9 @@
 namespace CheckItOnUs\Cachet;
 
 use ArrayAccess;
-use NotImplementedException;
-use CheckItOnUs\Cachet\Server;
 use CheckItOnUs\Cachet\Traits\HasDates;
 use CheckItOnUs\Cachet\Traits\HasMetadata;
-use CheckItOnUs\Cachet\ApiRequest;
+use NotImplementedException;
 
 abstract class BaseApiComponent implements ArrayAccess, ApiRequest
 {
@@ -16,15 +14,15 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
 
     /**
      * The server that the component is linked to.
-     * 
+     *
      * @var \CheckItOnUs\Cachet\Server
      */
     private $_server;
 
     /**
-     * Hydrates a new instance of a Component
+     * Hydrates a new instance of a Component.
      *
-     * @param      array  $metadata  The metadata
+     * @param array $metadata The metadata
      */
     public function __construct(Server $server, array $metadata = [])
     {
@@ -35,8 +33,9 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
     /**
      * Sets the server.
      *
-     * @param      \CheckItOnUs\Cachet\Server  $server  The server
-     * @return     \CheckItOnUs\Cachet\Component
+     * @param \CheckItOnUs\Cachet\Server $server The server
+     *
+     * @return \CheckItOnUs\Cachet\Component
      */
     public function onServer(Server $server)
     {
@@ -46,19 +45,21 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
     /**
      * Sets the server.
      *
-     * @param      \CheckItOnUs\Cachet\Server  $server  The server
-     * @return     \CheckItOnUs\Cachet\Component
+     * @param \CheckItOnUs\Cachet\Server $server The server
+     *
+     * @return \CheckItOnUs\Cachet\Component
      */
     public function setServer(Server $server)
     {
         $this->_server = $server;
+
         return $this;
     }
 
     /**
      * Retrieves the server that the object is related to.
      *
-     * @return     CheckItOnUs\Cachet\Server  The server.
+     * @return CheckItOnUs\Cachet\Server The server.
      */
     public function getServer()
     {
@@ -66,9 +67,9 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
     }
 
     /**
-     * Converts the object to a format which can be used when making an API 
+     * Converts the object to a format which can be used when making an API
      * request.
-     * 
+     *
      * @return mixed
      */
     public function toApi()
@@ -77,26 +78,26 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
 
         $apiRequest = [];
 
-        foreach($metadata as $key => $value) {
-            if(empty($value)) {
+        foreach ($metadata as $key => $value) {
+            if (empty($value)) {
                 continue;
             }
 
             // Do we have a special mutator for the API requests?
-            if(is_a($value, ApiRequest::class)) {
+            if (is_a($value, ApiRequest::class)) {
                 // We do, so adjust
                 $value = $value->toApi();
             }
-            
+
             // Is the value an array?
-            if(!is_array($value)) {
+            if (!is_array($value)) {
                 // It isn't, so make it one
                 $value = [
-                    $key => $value
+                    $key => $value,
                 ];
             }
 
-            foreach($value as $actual => $data) {
+            foreach ($value as $actual => $data) {
                 $apiRequest[$actual] = $data;
             }
         }
@@ -104,11 +105,10 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
         return $apiRequest;
     }
 
-
     /**
-     * Creates a new component
+     * Creates a new component.
      *
-     * @return     stdClass
+     * @return stdClass
      */
     public function create()
     {
@@ -116,7 +116,7 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
                 ->request()
                 ->post($this->getApiCreateUrl(), $this->toApi());
 
-        if(isset($object->data, $object->data->id)) {
+        if (isset($object->data, $object->data->id)) {
             $this->setId($object->data->id);
         }
 
@@ -124,24 +124,23 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
     }
 
     /**
-     * Updates the Component
+     * Updates the Component.
      *
-     * @return     mixed
+     * @return mixed
      */
     public function update()
     {
         // Is there an ID stored?
-        if(!$this['id']) {
+        if (!$this['id']) {
             // There isn't, so we need to look it up
             $component = self::on($this->_server)
                             ->findByName($this['name']);
 
             // Did we get it?
-            if($component && $component['id']) {
+            if ($component && $component['id']) {
                 // We did, so we are good
                 $this['id'] = $component['id'];
-            }
-            else {
+            } else {
                 // We didn't, so fail
                 return false;
             }
@@ -153,13 +152,13 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
     }
 
     /**
-     * Saves the object (either creates or updates)
+     * Saves the object (either creates or updates).
      *
-     * @return     stdClass
+     * @return stdClass
      */
     public function save()
     {
-        if($this['id']) {
+        if ($this['id']) {
             return $this->update();
         }
 
@@ -169,22 +168,21 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
     /**
      * Processes the deletion of a component.
      *
-     * @return     stdClass
+     * @return stdClass
      */
     public function delete()
     {
         // Is there an ID stored?
-        if(!$this['id']) {
+        if (!$this['id']) {
             // There isn't, so we need to look it up
             $component = self::on($this->_server)
                             ->findByName($this['name']);
 
             // Did we get it?
-            if($component && $component['id']) {
+            if ($component && $component['id']) {
                 // We did, so we are good
                 $this['id'] = $component['id'];
-            }
-            else {
+            } else {
                 // We didn't, so fail
                 return false;
             }
@@ -196,9 +194,9 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
     }
 
     /**
-     * Retrieves the base API URL for the current object
+     * Retrieves the base API URL for the current object.
      *
-     * @throws     NotImplementedException  (description)
+     * @throws NotImplementedException (description)
      */
     public static function getApiRootPath()
     {
@@ -206,9 +204,9 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
     }
 
     /**
-     * The URL which will be used in order to create a new object
+     * The URL which will be used in order to create a new object.
      *
-     * @return     string  The object's create URL
+     * @return string The object's create URL
      */
     public function getApiCreateUrl()
     {
@@ -216,43 +214,43 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
     }
 
     /**
-     * The URL which will be used in order to update a new object
+     * The URL which will be used in order to update a new object.
      *
-     * @return     string  The object's update URL
+     * @return string The object's update URL
      */
     public function getApiUpdateUrl()
     {
         return static::buildUrl('/:id', [
-            'id' => $this['id']
+            'id' => $this['id'],
         ]);
     }
 
     /**
-     * The URL which will be used in order to delete a new object
+     * The URL which will be used in order to delete a new object.
      *
-     * @return     string  The object's delete URL
+     * @return string The object's delete URL
      */
     public function getApiDeleteUrl()
     {
         return static::buildUrl('/:id', [
-            'id' => $this['id']
+            'id' => $this['id'],
         ]);
     }
 
     /**
-     * Builds an URL with the related metadata
+     * Builds an URL with the related metadata.
      *
-     * @param      string  $url     The url
-     * @param      array   $values  The values
+     * @param string $url    The url
+     * @param array  $values The values
      *
-     * @return     string  The url.
+     * @return string The url.
      */
     protected static function buildUrl($url, array $values = [])
     {
-        $url = static::getApiRootPath() . $url;
+        $url = static::getApiRootPath().$url;
 
-        foreach($values as $key => $value) {
-            $url = str_ireplace(':' . $key, $value, $url);
+        foreach ($values as $key => $value) {
+            $url = str_ireplace(':'.$key, $value, $url);
         }
 
         return $url;

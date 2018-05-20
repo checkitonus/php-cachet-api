@@ -9,7 +9,7 @@ class Text
         $result = '';
         $parts = explode('_', $string);
 
-        foreach($parts as $part) {
+        foreach ($parts as $part) {
             $result .= ucfirst($part);
         }
 

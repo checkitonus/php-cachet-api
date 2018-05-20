@@ -9,54 +9,56 @@ interface WebRequest
     /**
      * Sets up the configuration for the web request.
      *
-     * @param      \CheckItOnUs\Cachet\Configuration  $configuration  The configuration
+     * @param \CheckItOnUs\Cachet\Configuration $configuration The configuration
      */
-    function setConfiguration(Configuration $configuration);
+    public function setConfiguration(Configuration $configuration);
 
     /**
      * Performs a GET request.
      *
-     * @param      string  $url    The URL suffix to send the request to
-     * @return     \CheckItOnUs\Cachet\Request\PagedResponse
+     * @param string $url The URL suffix to send the request to
+     *
+     * @return \CheckItOnUs\Cachet\Request\PagedResponse
      */
-    function get($url);
+    public function get($url);
 
     /**
      * Performs a raw GET request.
      *
-     * @param      string  $url    The URL suffix to send the request to
-     * @return     mixed
+     * @param string $url The URL suffix to send the request to
+     *
+     * @return mixed
      */
-    function getRaw($url);
+    public function getRaw($url);
 
     /**
      * Performs a DELETE request.
      *
-     * @param      string  $url    The URL suffix to send the request to
+     * @param string $url The URL suffix to send the request to
      */
-    function delete($url);
+    public function delete($url);
 
     /**
      * Performs a POST request.
      *
-     * @param      string  $url   The URL suffix to send the request to
-     * @param      array  $data   The data to send
+     * @param string $url  The URL suffix to send the request to
+     * @param array  $data The data to send
      */
-    function post($url, $data);
+    public function post($url, $data);
 
     /**
      * Performs a PUT request.
      *
-     * @param      string  $url   The URL suffix to send the request to
-     * @param      array  $data   The data to send
+     * @param string $url  The URL suffix to send the request to
+     * @param array  $data The data to send
      */
-    function put($url, $data);
+    public function put($url, $data);
 
     /**
      * Performs a PATCH request.
      *
-     * @param      string  $url   The URL suffix to send the request to
-     * @param      array  $data   The data to send
+     * @param string $url  The URL suffix to send the request to
+     * @param array  $data The data to send
      */
-    function patch($url, $data);
+    public function patch($url, $data);
 }

@@ -3,57 +3,56 @@
 namespace CheckItOnUs\Cachet\Request;
 
 use Iterator;
-use CheckItOnUs\Cachet\Request\WebRequest;
 
 class PagedResponse implements Iterator
 {
     /**
      * The configured web request object.
-     * 
+     *
      * @var \CheckItOnUs\Cachet\Request\WebRequest
      */
     private $_webRequest;
 
     /**
-     * The URL that was previously requested
-     * 
+     * The URL that was previously requested.
+     *
      * @var string
      */
     private $_url;
 
     /**
-     * The current page that we are on
+     * The current page that we are on.
      *
-     * @var        integer
+     * @var int
      */
     private $_page = 1;
 
     /**
-     * The maximum page number
+     * The maximum page number.
      *
-     * @var        integer
+     * @var int
      */
     private $_maximumPage = 1;
 
     /**
      * Internal cached storage of the data which was previously retrieved.
      *
-     * @var        array
+     * @var array
      */
     private $_pagedData = [];
 
     /**
-     * The data for the current active request
-     * 
+     * The data for the current active request.
+     *
      * @var mixed
      */
     public $data;
 
     /**
-     * Initializes the paged response
+     * Initializes the paged response.
      *
-     * @param      \CheckItOnUs\Cachet\Request\WebRequest  $webRequest  The web request
-     * @param      string                                  $url         The url
+     * @param \CheckItOnUs\Cachet\Request\WebRequest $webRequest The web request
+     * @param string                                 $url        The url
      */
     public function __construct(WebRequest $webRequest, $url)
     {
@@ -64,14 +63,14 @@ class PagedResponse implements Iterator
     }
 
     /**
-     * Retrieves the current element
+     * Retrieves the current element.
      *
-     * @return     mixed
+     * @return mixed
      */
     public function current()
     {
         // Do we already have the current page's data?
-        if(isset($this->_pagedData[$this->_page])) {
+        if (isset($this->_pagedData[$this->_page])) {
             // We do, so return it
             return $this->data = $this->_pagedData[$this->_page];
         }
@@ -80,9 +79,9 @@ class PagedResponse implements Iterator
     }
 
     /**
-     * Retrieves the current page that we are on
+     * Retrieves the current page that we are on.
      *
-     * @return     int
+     * @return int
      */
     public function key()
     {
@@ -98,7 +97,7 @@ class PagedResponse implements Iterator
     }
 
     /**
-     * Rewinds the list to the first element
+     * Rewinds the list to the first element.
      */
     public function rewind()
     {
@@ -106,9 +105,9 @@ class PagedResponse implements Iterator
     }
 
     /**
-     * Determines if the current page is valid
+     * Determines if the current page is valid.
      *
-     * @return     boolean
+     * @return bool
      */
     public function valid()
     {
@@ -116,31 +115,31 @@ class PagedResponse implements Iterator
     }
 
     /**
-     * Used internally in order to send a specific web request
+     * Used internally in order to send a specific web request.
      *
-     * @return     mixed
+     * @return mixed
      */
     private function sendRequest()
     {
         $url = $this->_url;
 
         // Is the current page greater than 1?
-        if($this->_page > 1) {
+        if ($this->_page > 1) {
             // It is, so add the page number in
-            $url .= '?page=' . $this->_page;
+            $url .= '?page='.$this->_page;
         }
 
         // Get a raw request
         $response = $this->_webRequest->getRaw($url);
 
         // Was there data?
-        if($response === null) {
+        if ($response === null) {
             // There wasn't, so we are done
-            return null;
+            return;
         }
 
         // Is there pagination information?
-        if(isset($response->meta, $response->meta->pagination)) {
+        if (isset($response->meta, $response->meta->pagination)) {
             // Grab the maximum total number of pages
             $this->_maximumPage = $response->meta->pagination->total_pages;
         }

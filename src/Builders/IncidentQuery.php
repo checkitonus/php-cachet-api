@@ -2,37 +2,35 @@
 
 namespace CheckItOnUs\Cachet\Builders;
 
-use CheckItOnUs\Cachet\Server;
 use CheckItOnUs\Cachet\Incident;
-use CheckItOnUs\Cachet\Builders\BaseQuery;
+use CheckItOnUs\Cachet\Server;
 
 class IncidentQuery extends BaseQuery
 {
-
     /**
-     * Finds a specific Incident by the ID
+     * Finds a specific Incident by the ID.
      *
-     * @param      integer  $id     The identifier
+     * @param int $id The identifier
      *
-     * @return     \CheckItOnUs\Cachet\Incident
+     * @return \CheckItOnUs\Cachet\Incident
      */
     public function findById($id)
     {
         return new Incident(
             $this->getServer(),
-            (array)$this->getServer()
+            (array) $this->getServer()
                 ->request()
-                ->get(Incident::getApiRootPath() . '/' . $id)
+                ->get(Incident::getApiRootPath().'/'.$id)
                 ->data
         );
     }
 
     /**
-     * Finds a specific Incident based on the name
+     * Finds a specific Incident based on the name.
      *
-     * @param      string     $name   The name
+     * @param string $name The name
      *
-     * @return     CheckItOnUs\Cachet\Incident
+     * @return CheckItOnUs\Cachet\Incident
      */
     public function findByName($name)
     {
@@ -40,26 +38,24 @@ class IncidentQuery extends BaseQuery
                     ->request()
                     ->get(Incident::getApiRootPath());
 
-        foreach($pages as $page) {
-            $incident = $page->first(function($incident) use($name) {
+        foreach ($pages as $page) {
+            $incident = $page->first(function ($incident) use ($name) {
                 return $incident->name == $name;
             });
 
-            if($incident !== null) {
+            if ($incident !== null) {
                 return new Incident(
                     $this->getServer(),
-                    (array)$incident
+                    (array) $incident
                 );
             }
         }
-
-        return null;
     }
 
     /**
-     * Retrieves all of the Components on the server
+     * Retrieves all of the Components on the server.
      *
-     * @return     \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function all()
     {
@@ -69,12 +65,12 @@ class IncidentQuery extends BaseQuery
 
         $incidents = collect();
 
-        foreach($pages as $page) {
-            foreach($page as $incident) {
+        foreach ($pages as $page) {
+            foreach ($page as $incident) {
                 $incidents->push(
                     new Incident(
                         $this->getServer(),
-                        (array)$incident
+                        (array) $incident
                     )
                 );
             }
