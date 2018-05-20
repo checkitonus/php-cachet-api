@@ -8,9 +8,9 @@ use CheckItOnUs\Cachet\ApiRequest;
 class Date extends Carbon implements ApiRequest
 {
     /**
-     * Converts the object to a format which can be used when making an API 
+     * Converts the object to a format which can be used when making an API
      * request.
-     * 
+     *
      * @return mixed
      */
     public function toApi()

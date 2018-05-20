@@ -2,14 +2,12 @@
 
 namespace CheckItOnUs\Cachet\Request;
 
-use CheckItOnUs\Cachet\Request\GuzzleRequest;
-
 class SpoofedVerbRequest extends GuzzleRequest
 {
     /**
      * Performs a DELETE request.
      *
-     * @param      string  $url    The URL suffix to send the request to
+     * @param string $url The URL suffix to send the request to
      */
     public function delete($url)
     {
@@ -21,8 +19,8 @@ class SpoofedVerbRequest extends GuzzleRequest
     /**
      * Performs a PUT request.
      *
-     * @param      string  $url   The URL suffix to send the request to
-     * @param      array  $data   The data to send
+     * @param string $url  The URL suffix to send the request to
+     * @param array  $data The data to send
      */
     public function put($url, $data)
     {
@@ -34,8 +32,8 @@ class SpoofedVerbRequest extends GuzzleRequest
     /**
      * Performs a PATCH request.
      *
-     * @param      string  $url   The URL suffix to send the request to
-     * @param      array  $data   The data to send
+     * @param string $url  The URL suffix to send the request to
+     * @param array  $data The data to send
      */
     public function patch($url, $data)
     {

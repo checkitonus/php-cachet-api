@@ -2,36 +2,35 @@
 
 namespace CheckItOnUs\Cachet\Builders;
 
-use CheckItOnUs\Cachet\Server;
 use CheckItOnUs\Cachet\IncidentUpdate;
+use CheckItOnUs\Cachet\Server;
 
 class IncidentUpdateQuery
 {
-
     /**
-     * Finds a specific Incident by the ID
+     * Finds a specific Incident by the ID.
      *
-     * @param      integer  $id     The identifier
+     * @param int $id The identifier
      *
-     * @return     \CheckItOnUs\Cachet\Incident
+     * @return \CheckItOnUs\Cachet\Incident
      */
     public function findById($id)
     {
         return new IncidentUpdate(
             $this->getServer(),
-            (array)$this->getServer()
+            (array) $this->getServer()
                 ->request()
-                ->get(IncidentUpdate::getApiRootPath() . '/' . $id)
+                ->get(IncidentUpdate::getApiRootPath().'/'.$id)
                 ->data
         );
     }
 
     /**
-     * Finds a specific Incident based on the name
+     * Finds a specific Incident based on the name.
      *
-     * @param      string     $name   The name
+     * @param string $name The name
      *
-     * @return     CheckItOnUs\Cachet\Incident
+     * @return CheckItOnUs\Cachet\Incident
      */
     public function findByName($name)
     {
@@ -39,26 +38,24 @@ class IncidentUpdateQuery
                     ->request()
                     ->get(IncidentUpdate::getApiRootPath());
 
-        foreach($pages as $page) {
-            $incidentUpdate = $page->first(function($incidentUpdate) use($name) {
+        foreach ($pages as $page) {
+            $incidentUpdate = $page->first(function ($incidentUpdate) use ($name) {
                 return $incidentUpdate->name == $name;
             });
 
-            if($incidentUpdate !== null) {
+            if ($incidentUpdate !== null) {
                 return new IncidentUpdate(
                     $this->getServer(),
-                    (array)$incidentUpdate
+                    (array) $incidentUpdate
                 );
             }
         }
-
-        return null;
     }
 
     /**
-     * Retrieves all of the Components on the server
+     * Retrieves all of the Components on the server.
      *
-     * @return     \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function all()
     {
@@ -68,12 +65,12 @@ class IncidentUpdateQuery
 
         $incidentUpdates = collect();
 
-        foreach($pages as $page) {
-            foreach($page as $incidentUpdate) {
+        foreach ($pages as $page) {
+            foreach ($page as $incidentUpdate) {
                 $incidentUpdates->push(
                     new IncidentUpdate(
                         $this->getServer(),
-                        (array)$incidentUpdate
+                        (array) $incidentUpdate
                     )
                 );
             }

@@ -2,11 +2,9 @@
 
 namespace CheckItOnUs\Cachet;
 
-use CheckItOnUs\Cachet\Server;
-use Composer\Semver\Comparator;
-use CheckItOnUs\Cachet\BaseApiComponent;
 use CheckItOnUs\Cachet\Builders\IncidentQuery;
 use CheckItOnUs\Cachet\Exceptions\InvalidVersionException;
+use Composer\Semver\Comparator;
 
 class IncidentUpdate extends BaseApiComponent
 {
@@ -19,11 +17,11 @@ class IncidentUpdate extends BaseApiComponent
     /**
      * Dictates the server that the Incident Update relates to.
      *
-     * @param      \CheckItOnUs\Cachet\Server  $server  The server
+     * @param \CheckItOnUs\Cachet\Server $server The server
      */
     public static function on(Server $server)
     {
-        if(Comparator::lessThanOrEqualTo($server->version(), '2.4')) {
+        if (Comparator::lessThanOrEqualTo($server->version(), '2.4')) {
             throw new InvalidVersionException('Server needs to be at least version 2.4 to use this feature.');
         }
 
@@ -32,25 +30,25 @@ class IncidentUpdate extends BaseApiComponent
     }
 
     /**
-     * Hydrates a new instance of an Incident Update
+     * Hydrates a new instance of an Incident Update.
      *
-     * @param      array  $metadata  The metadata
+     * @param array $metadata The metadata
      */
     public function __construct(Server $server, array $metadata = [])
     {
-        if(Comparator::lessThanOrEqualTo($server->version(), '2.4')) {
+        if (Comparator::lessThanOrEqualTo($server->version(), '2.4')) {
             throw new InvalidVersionException('Server needs to be at least version 2.4 to use this feature.');
         }
-        
+
         $this->setStatus(self::INVESTIGATING);
 
         parent::__construct($server, $metadata);
     }
 
     /**
-     * The URL which will be used in order to create a new object
+     * The URL which will be used in order to create a new object.
      *
-     * @return     string  The object's create URL
+     * @return string The object's create URL
      */
     public function getApiCreateUrl()
     {
@@ -60,35 +58,35 @@ class IncidentUpdate extends BaseApiComponent
     }
 
     /**
-     * The URL which will be used in order to update a new object
+     * The URL which will be used in order to update a new object.
      *
-     * @return     string  The object's update URL
+     * @return string The object's update URL
      */
     public function getApiUpdateUrl()
     {
         return static::buildUrl(':update', [
             'incident' => $this['incident_id'],
-            'update' => $this['id']
+            'update'   => $this['id'],
         ]);
     }
 
     /**
-     * The URL which will be used in order to delete a new object
+     * The URL which will be used in order to delete a new object.
      *
-     * @return     string  The object's delete URL
+     * @return string The object's delete URL
      */
     public function getApiDeleteUrl()
     {
         return static::buildUrl(':update', [
             'incident' => $this['incident_id'],
-            'update' => $this['id']
+            'update'   => $this['id'],
         ]);
     }
 
     /**
-     * Gets the base path for the API
+     * Gets the base path for the API.
      *
-     * @return     string  The api root path.
+     * @return string The api root path.
      */
     public static function getApiRootPath()
     {
