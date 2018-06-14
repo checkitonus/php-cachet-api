@@ -12,7 +12,7 @@ class Incident extends BaseApiComponent
 
     const SCHEDULED = 0;
     const INVESTIGATING = 1;
-    const IDENTIFIED = 1;
+    const IDENTIFIED = 2;
     const WATCHING = 3;
     const FIXED = 4;
 
