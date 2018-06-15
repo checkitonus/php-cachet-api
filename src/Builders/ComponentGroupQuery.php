@@ -4,34 +4,33 @@ namespace CheckItOnUs\Cachet\Builders;
 
 use CheckItOnUs\Cachet\Component;
 use CheckItOnUs\Cachet\ComponentGroup;
-use CheckItOnUs\Cachet\Builders\BaseQuery;
 
 class ComponentGroupQuery extends BaseQuery
 {
     /**
-     * Finds a specific Component by the ID
+     * Finds a specific Component by the ID.
      *
-     * @param      integer  $id     The identifier
+     * @param int $id The identifier
      *
-     * @return     \CheckItOnUs\Cachet\Component
+     * @return \CheckItOnUs\Cachet\Component
      */
     public function findById($id)
     {
         return new ComponentGroup(
             $this->getServer(),
-            (array)$this->getServer()
+            (array) $this->getServer()
                 ->request()
-                ->get(ComponentGroup::getApiRootPath() . '/' . $id)
+                ->get(ComponentGroup::getApiRootPath().'/'.$id)
                 ->data
         );
     }
 
     /**
-     * Finds a specific Component based on the name
+     * Finds a specific Component based on the name.
      *
-     * @param      string     $name   The name
+     * @param string $name The name
      *
-     * @return     CheckItOnUs\Cachet\Component
+     * @return CheckItOnUs\Cachet\Component
      */
     public function findByName($name)
     {
@@ -39,26 +38,24 @@ class ComponentGroupQuery extends BaseQuery
                     ->request()
                     ->get(ComponentGroup::getApiRootPath());
 
-        foreach($pages as $page) {
-            $componentGroup = $page->first(function($componentGroup) use($name) {
+        foreach ($pages as $page) {
+            $componentGroup = $page->first(function ($componentGroup) use ($name) {
                 return $componentGroup->name == $name;
             });
 
-            if($componentGroup !== null) {
+            if ($componentGroup !== null) {
                 return new ComponentGroup(
                     $this->getServer(),
-                    (array)$componentGroup
+                    (array) $componentGroup
                 );
             }
         }
-
-        return null;
     }
 
     /**
-     * Retrieves all of the Components on the server
+     * Retrieves all of the Components on the server.
      *
-     * @return     \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function all()
     {
@@ -68,12 +65,12 @@ class ComponentGroupQuery extends BaseQuery
 
         $componentGroups = collect();
 
-        foreach($pages as $page) {
-            foreach($page as $componentGroup) {
+        foreach ($pages as $page) {
+            foreach ($page as $componentGroup) {
                 $componentGroups->push(
                     new ComponentGroup(
                         $this->getServer(),
-                        (array)$componentGroup
+                        (array) $componentGroup
                     )
                 );
             }

@@ -2,12 +2,8 @@
 
 namespace CheckItOnUs\Cachet;
 
-use CheckItOnUs\Cachet\Server;
-use CheckItOnUs\Cachet\ComponentGroup;
-use CheckItOnUs\Cachet\Decorators\Tags;
-use CheckItOnUs\Cachet\BaseApiComponent;
-use CheckItOnUs\Cachet\Traits\HasApiRoutes;
 use CheckItOnUs\Cachet\Builders\ComponentQuery;
+use CheckItOnUs\Cachet\Decorators\Tags;
 
 class Component extends BaseApiComponent
 {
@@ -19,7 +15,7 @@ class Component extends BaseApiComponent
     /**
      * Dictates the server that the Component relates to.
      *
-     * @param      \CheckItOnUs\Cachet\Server  $server  The server
+     * @param \CheckItOnUs\Cachet\Server $server The server
      */
     public static function on(Server $server)
     {
@@ -34,8 +30,8 @@ class Component extends BaseApiComponent
 
     public function getGroup()
     {
-        if(empty($this['group_id'])) {
-            return null;
+        if (empty($this['group_id'])) {
+            return;
         }
 
         return ComponentGroup::on($this->getServer())
@@ -43,9 +39,9 @@ class Component extends BaseApiComponent
     }
 
     /**
-     * Retrieves the current status code of the component
+     * Retrieves the current status code of the component.
      *
-     * @return     int  The status.
+     * @return int The status.
      */
     public function getStatus()
     {
@@ -55,20 +51,21 @@ class Component extends BaseApiComponent
     /**
      * Sets the tags.
      *
-     * @param      object|array  $value  The value
+     * @param object|array $value The value
      *
-     * @return     CheckItOnUs\Cachet\Component
+     * @return CheckItOnUs\Cachet\Component
      */
     public function setTags($value)
     {
-        $this->_metadata['tags'] = new Tags(array_filter((array)$value));
+        $this->_metadata['tags'] = new Tags(array_filter((array) $value));
+
         return $this;
     }
 
     /**
      * Gets the tags.
      *
-     * @return     Illuminate\Support\Collection  The tags.
+     * @return Illuminate\Support\Collection The tags.
      */
     public function getTags()
     {
@@ -78,30 +75,31 @@ class Component extends BaseApiComponent
     /**
      * Adds a tag to the list.
      *
-     * @param      string  $value  The value
+     * @param string $value The value
      *
-     * @return     CheckItOnUs\Cachet\Component
+     * @return CheckItOnUs\Cachet\Component
      */
     public function addTag($value)
     {
         $this['tags']->push($value);
+
         return $this;
     }
 
     /**
      * Converts the status name field into the status code which is required.
      *
-     * @param      string  $value  The value
+     * @param string $value The value
      *
-     * @return     CheckItOnUs\Cachet\Component
+     * @return CheckItOnUs\Cachet\Component
      */
     public function setStatusName($value)
     {
         // Try to translate the status
-        if(isset($value)) {
+        if (isset($value)) {
             // It existed, so translate into something we understand
             $status = strtoupper($value);
-            $this['status'] = constant(self::class . '::' . str_replace(' ', '_', $status));
+            $this['status'] = constant(self::class.'::'.str_replace(' ', '_', $status));
         }
 
         return $this;

@@ -2,14 +2,11 @@
 
 namespace CheckItOnUs\Cachet;
 
-use CheckItOnUs\Cachet\Server;
-use CheckItOnUs\Cachet\BaseApiComponent;
-use CheckItOnUs\Cachet\Decorators\Template;
 use CheckItOnUs\Cachet\Builders\IncidentQuery;
+use CheckItOnUs\Cachet\Decorators\Template;
 
 class Incident extends BaseApiComponent
 {
-
     const SCHEDULED = 0;
     const INVESTIGATING = 1;
     const IDENTIFIED = 2;
@@ -19,7 +16,7 @@ class Incident extends BaseApiComponent
     /**
      * Dictates the server that the Incident relates to.
      *
-     * @param      \CheckItOnUs\Cachet\Server  $server  The server
+     * @param \CheckItOnUs\Cachet\Server $server The server
      */
     public static function on(Server $server)
     {
@@ -28,9 +25,9 @@ class Incident extends BaseApiComponent
     }
 
     /**
-     * Hydrates a new instance of an Incident
+     * Hydrates a new instance of an Incident.
      *
-     * @param      array  $metadata  The metadata
+     * @param array $metadata The metadata
      */
     public function __construct(Server $server, array $metadata = [])
     {
@@ -45,9 +42,9 @@ class Incident extends BaseApiComponent
     }
 
     /**
-     * Gets the base path for the API
+     * Gets the base path for the API.
      *
-     * @return     string  The api root path.
+     * @return string The api root path.
      */
     public static function getApiRootPath()
     {
@@ -55,39 +52,43 @@ class Incident extends BaseApiComponent
     }
 
     /**
-     * Sets the template's name
+     * Sets the template's name.
      *
-     * @param      \CheckItOnUs\Cachet\Incident  $name  The template's name
+     * @param \CheckItOnUs\Cachet\Incident $name The template's name
      */
     public function setTemplate($name)
     {
         $this->_metadata['template']['name'] = $name;
+
         return $this;
     }
 
     /**
      * Sets the template variables.
      *
-     * @param      array  $variables  The variables
-     * @return      \CheckItOnUs\Cachet\Incident
+     * @param array $variables The variables
+     *
+     * @return \CheckItOnUs\Cachet\Incident
      */
     public function setVars($variables)
     {
         $this->_metadata['template']['variables'] = $variables;
+
         return $this;
     }
 
     /**
-     * Adds a variable to the template
+     * Adds a variable to the template.
      *
-     * @param      string  $key    The key
-     * @param      mixed  $value  The value
+     * @param string $key   The key
+     * @param mixed  $value The value
      *
-     * @return     \CheckItOnUs\Cachet\Incident
+     * @return \CheckItOnUs\Cachet\Incident
      */
     public function addVariable($key, $value)
     {
         $this->_metadata['template']['variables'][$key] = $value;
+
         return $this;
     }
 }
