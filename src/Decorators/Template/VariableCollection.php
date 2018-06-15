@@ -10,9 +10,9 @@ class VariableCollection implements ArrayAccess
     use HasMetadata;
 
     /**
-     * Retrieves the complete list of variables
+     * Retrieves the complete list of variables.
      *
-     * @return     array
+     * @return array
      */
     public function all()
     {

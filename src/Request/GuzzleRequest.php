@@ -2,10 +2,9 @@
 
 namespace CheckItOnUs\Cachet\Request;
 
-use GuzzleHttp\Client;
 use CheckItOnUs\Cachet\Configuration;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use CheckItOnUs\Cachet\Request\PagedResponse;
 
 class GuzzleRequest implements WebRequest
 {
@@ -15,8 +14,8 @@ class GuzzleRequest implements WebRequest
     private $_client;
 
     /**
-     * The configuration object
-     * 
+     * The configuration object.
+     *
      * @var \CheckItOnUs\Cachet\Configuration
      */
     private $_configuration;
@@ -32,14 +31,15 @@ class GuzzleRequest implements WebRequest
     /**
      * Sets up the configuration for the web request.
      *
-     * @param      \CheckItOnUs\Cachet\Configuration  $configuration  The configuration
-     * @return     \CheckItOnUs\Cachet\Request\WebRequest
+     * @param \CheckItOnUs\Cachet\Configuration $configuration The configuration
+     *
+     * @return \CheckItOnUs\Cachet\Request\WebRequest
      */
     public function setConfiguration(Configuration $configuration)
     {
         $this->_configuration = $configuration;
 
-        if($configuration->getBaseUrl()) {
+        if ($configuration->getBaseUrl()) {
             $this->_client = new Client([
                 'base_uri' => $configuration->getBaseUrl(),
             ]);
@@ -51,7 +51,7 @@ class GuzzleRequest implements WebRequest
     /**
      * Performs a GET request.
      *
-     * @param      string  $url    The URL suffix to send the request to
+     * @param string $url The URL suffix to send the request to
      */
     public function get($url)
     {
@@ -62,19 +62,19 @@ class GuzzleRequest implements WebRequest
     }
 
     /**
-     * Performs a raw GET request
+     * Performs a raw GET request.
      *
-     * @param      string  $url    THe URL suffix to send the request to
-     * @return     mixed
+     * @param string $url THe URL suffix to send the request to
+     *
+     * @return mixed
      */
     public function getRaw($url)
     {
         try {
             return $this->raw('GET', $url);
-        }
-        catch(ClientException $ex) {
-            if($ex->getResponse()->getStatusCode() == 404) {
-                return null;
+        } catch (ClientException $ex) {
+            if ($ex->getResponse()->getStatusCode() == 404) {
+                return;
             }
 
             throw $ex;
@@ -84,7 +84,7 @@ class GuzzleRequest implements WebRequest
     /**
      * Performs a DELETE request.
      *
-     * @param      string  $url    The URL suffix to send the request to
+     * @param string $url The URL suffix to send the request to
      */
     public function delete($url)
     {
@@ -94,8 +94,8 @@ class GuzzleRequest implements WebRequest
     /**
      * Performs a POST request.
      *
-     * @param      string  $url   The URL suffix to send the request to
-     * @param      array  $data   The data to send
+     * @param string $url  The URL suffix to send the request to
+     * @param array  $data The data to send
      */
     public function post($url, $data)
     {
@@ -105,8 +105,8 @@ class GuzzleRequest implements WebRequest
     /**
      * Performs a PUT request.
      *
-     * @param      string  $url   The URL suffix to send the request to
-     * @param      array  $data   The data to send
+     * @param string $url  The URL suffix to send the request to
+     * @param array  $data The data to send
      */
     public function put($url, $data)
     {
@@ -116,8 +116,8 @@ class GuzzleRequest implements WebRequest
     /**
      * Performs a PATCH request.
      *
-     * @param      string  $url   The URL suffix to send the request to
-     * @param      array  $data   The data to send
+     * @param string $url  The URL suffix to send the request to
+     * @param array  $data The data to send
      */
     public function patch($url, $data)
     {
@@ -127,11 +127,11 @@ class GuzzleRequest implements WebRequest
     /**
      * Processes a raw request.
      *
-     * @param      string  $method  The method
-     * @param      string  $url     The url
-     * @param      mixed  $data    The data
+     * @param string $method The method
+     * @param string $url    The url
+     * @param mixed  $data   The data
      *
-     * @return     Object
+     * @return object
      */
     private function raw($method, $url, $data = null)
     {
@@ -141,13 +141,13 @@ class GuzzleRequest implements WebRequest
             ],
         ];
 
-        if(!empty($data)) {
+        if (!empty($data)) {
             $headers['form_params'] = $data;
         }
 
         return json_decode(
             $this->_client
-                ->request($method, '/api' . $url, $headers)
+                ->request($method, '/api'.$url, $headers)
                 ->getBody()
                 ->__toString()
         );

@@ -2,36 +2,35 @@
 
 namespace CheckItOnUs\Cachet\Builders;
 
-use CheckItOnUs\Cachet\Server;
 use CheckItOnUs\Cachet\Component;
-use CheckItOnUs\Cachet\Builders\BaseQuery;
+use CheckItOnUs\Cachet\Server;
 
 class ComponentQuery extends BaseQuery
 {
     /**
-     * Finds a specific Component by the ID
+     * Finds a specific Component by the ID.
      *
-     * @param      integer  $id     The identifier
+     * @param int $id The identifier
      *
-     * @return     \CheckItOnUs\Cachet\Component
+     * @return \CheckItOnUs\Cachet\Component
      */
     public function findById($id)
     {
         return new Component(
             $this->getServer(),
-            (array)$this->getServer()
+            (array) $this->getServer()
                 ->request()
-                ->get(Component::getApiRootPath() . '/' . $id)
+                ->get(Component::getApiRootPath().'/'.$id)
                 ->data
         );
     }
 
     /**
-     * Finds a specific Component based on the name
+     * Finds a specific Component based on the name.
      *
-     * @param      string     $name   The name
+     * @param string $name The name
      *
-     * @return     CheckItOnUs\Cachet\Component
+     * @return CheckItOnUs\Cachet\Component
      */
     public function findByName($name)
     {
@@ -39,30 +38,28 @@ class ComponentQuery extends BaseQuery
                     ->request()
                     ->get(Component::getApiRootPath());
 
-        foreach($pages as $page) {
-            if($page === null) {
-                return null;
+        foreach ($pages as $page) {
+            if ($page === null) {
+                return;
             }
 
-            $component = $page->first(function($component) use($name) {
+            $component = $page->first(function ($component) use ($name) {
                 return $component->name == $name;
             });
 
-            if($component !== null) {
+            if ($component !== null) {
                 return new Component(
                     $this->getServer(),
-                    (array)$component
+                    (array) $component
                 );
             }
         }
-
-        return null;
     }
 
     /**
-     * Retrieves all of the Components on the server
+     * Retrieves all of the Components on the server.
      *
-     * @return     \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function all()
     {
@@ -72,12 +69,12 @@ class ComponentQuery extends BaseQuery
 
         $components = collect();
 
-        foreach($pages as $page) {
-            foreach($page as $component) {
+        foreach ($pages as $page) {
+            foreach ($page as $component) {
                 $components->push(
                     new Component(
                         $this->getServer(),
-                        (array)$component
+                        (array) $component
                     )
                 );
             }
