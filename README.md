@@ -1,4 +1,4 @@
-Cachet API
+Cachet SDK
 =================
 
 [![CheckItOn.Us Logo](https://www.checkiton.us/img/mono-logo.png)](https://www.checkiton.us)
