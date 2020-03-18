@@ -141,7 +141,7 @@ class GuzzleRequest implements WebRequest
             ],
         ];
 
-        if(is_array($data) && isset($data['occurred_at'])) {
+        if (is_array($data) && isset($data['occurred_at'])) {
             unset($data['occurred_at']);
         }
 

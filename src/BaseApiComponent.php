@@ -9,8 +9,8 @@ use NotImplementedException;
 
 abstract class BaseApiComponent implements ArrayAccess, ApiRequest
 {
-    use HasDates
-        ,HasMetadata;
+    use HasDates;
+    use HasMetadata;
 
     /**
      * The server that the component is linked to.

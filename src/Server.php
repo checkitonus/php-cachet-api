@@ -29,7 +29,7 @@ class Server
     /**
      * Initializes the Cachet component.
      *
-     * @param   $configuration The configuration
+     * @param $configuration The configuration
      */
     public function __construct($configuration = null, $webRequest = null)
     {
