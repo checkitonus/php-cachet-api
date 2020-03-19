@@ -15,6 +15,6 @@ class Date extends Carbon implements ApiRequest
      */
     public function toApi()
     {
-        return $this->format('d/m/Y H:i');
+        return $this->format('Y-m-d H:i');
     }
 }

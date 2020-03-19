@@ -29,7 +29,7 @@ trait HasDates
         $this->_metadata['updated_at'] = $this->deriveDate($value);
 
         return $this;
-    }
+    }    
 
     /**
      * Determine the value of a date.
