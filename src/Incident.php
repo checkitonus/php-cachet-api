@@ -91,4 +91,17 @@ class Incident extends BaseApiComponent
 
         return $this;
     }
+
+    /**
+     * Converts the updated_at attribute to a date.
+     *
+     * @param string $value The value
+     */
+    public function setOccurredAt($value)
+    {
+        $this->_metadata['occurred_at'] = $this->deriveDate($value);
+
+        return $this;
+    }    
+
 }

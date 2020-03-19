@@ -2,6 +2,8 @@
 
 namespace CheckItOnUs\Cachet\Traits;
 
+use Carbon\Carbon;
+use CheckItOnUs\Decorators\Date;
 use CheckItOnUs\Cachet\Helpers\Slug;
 use CheckItOnUs\Cachet\Helpers\Text;
 
