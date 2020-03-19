@@ -2,10 +2,10 @@
 
 namespace CheckItOnUs\Cachet\Request;
 
-use GuzzleHttp\Client;
 use CheckItOnUs\Cachet\Configuration;
-use GuzzleHttp\Exception\ClientException;
 use CheckItOnUs\Cachet\Exceptions\UnauthorizedException;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 class GuzzleRequest implements WebRequest
 {
@@ -44,7 +44,7 @@ class GuzzleRequest implements WebRequest
 
         if ($configuration->getBaseUrl()) {
             $this->_client = new Client([
-                'base_uri' => $configuration->getBaseUrl(),
+                'base_uri'    => $configuration->getBaseUrl(),
                 'http_errors' => false,
             ]);
         }
@@ -158,11 +158,11 @@ class GuzzleRequest implements WebRequest
                 ->__toString()
         );
 
-        if($response->getStatusCode() === 401) {
+        if ($response->getStatusCode() === 401) {
             throw new UnauthorizedException("There was an issue with Authentication.  Please check your API key and try again.");
         }
 
-        if($response->getStatusCode() === 500) {
+        if ($response->getStatusCode() === 500) {
             $error = collect($data->errors)->first();
             throw new \Exception($error->detail);
         }
