@@ -159,11 +159,12 @@ class GuzzleRequest implements WebRequest
         );
 
         if ($response->getStatusCode() === 401) {
-            throw new UnauthorizedException("There was an issue with Authentication.  Please check your API key and try again.");
+            throw new UnauthorizedException('There was an issue with Authentication.  Please check your API key and try again.');
         }
 
         if ($response->getStatusCode() === 500) {
             $error = collect($data->errors)->first();
+            
             throw new \Exception($error->detail);
         }
 
