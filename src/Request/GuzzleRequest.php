@@ -2,9 +2,10 @@
 
 namespace CheckItOnUs\Cachet\Request;
 
-use CheckItOnUs\Cachet\Configuration;
 use GuzzleHttp\Client;
+use CheckItOnUs\Cachet\Configuration;
 use GuzzleHttp\Exception\ClientException;
+use CheckItOnUs\Cachet\Exceptions\UnauthorizedException;
 
 class GuzzleRequest implements WebRequest
 {
@@ -25,7 +26,9 @@ class GuzzleRequest implements WebRequest
      */
     public function __construct()
     {
-        $this->_client = new Client();
+        $this->_client = new Client([
+            'http_errors' => false,
+        ]);
     }
 
     /**
@@ -42,6 +45,7 @@ class GuzzleRequest implements WebRequest
         if ($configuration->getBaseUrl()) {
             $this->_client = new Client([
                 'base_uri' => $configuration->getBaseUrl(),
+                'http_errors' => false,
             ]);
         }
 
@@ -141,19 +145,28 @@ class GuzzleRequest implements WebRequest
             ],
         ];
 
-        if (is_array($data) && isset($data['occurred_at'])) {
-            unset($data['occurred_at']);
-        }
-
         if (!empty($data)) {
             $headers['form_params'] = $data;
         }
 
-        return json_decode(
-            $this->_client
-                ->request($method, '/api'.$url, $headers)
-                ->getBody()
+
+        $response = $this->_client
+            ->request($method, '/api'.$url, $headers);
+
+        $data = json_decode(
+            $response->getBody()
                 ->__toString()
         );
+
+        if($response->getStatusCode() === 401) {
+            throw new UnauthorizedException("There was an issue with Authentication.  Please check your API key and try again.");
+        }
+
+        if($response->getStatusCode() === 500) {
+            $error = collect($data->errors)->first();
+            throw new \Exception($error->detail);
+        }
+
+        return $data;
     }
 }
