@@ -149,7 +149,6 @@ class GuzzleRequest implements WebRequest
             $headers['form_params'] = $data;
         }
 
-
         $response = $this->_client
             ->request($method, '/api'.$url, $headers);
 
