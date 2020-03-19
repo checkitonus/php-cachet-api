@@ -164,7 +164,7 @@ class GuzzleRequest implements WebRequest
 
         if ($response->getStatusCode() === 500) {
             $error = collect($data->errors)->first();
-            
+
             throw new \Exception($error->detail);
         }
 
