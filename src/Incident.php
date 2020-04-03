@@ -102,6 +102,5 @@ class Incident extends BaseApiComponent
         $this->_metadata['occurred_at'] = $this->deriveDate($value);
 
         return $this;
-    }    
-
+    }
 }

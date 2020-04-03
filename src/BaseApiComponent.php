@@ -72,8 +72,12 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
      *
      * @return mixed
      */
-    public function toApi()
+    public function toApi(Server $server = null)
     {
+        if(!$server) {
+            $server = $this->getServer();
+        }
+
         $metadata = $this->getMetadata();
 
         $apiRequest = [];
@@ -86,7 +90,7 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
             // Do we have a special mutator for the API requests?
             if (is_a($value, ApiRequest::class)) {
                 // We do, so adjust
-                $value = $value->toApi();
+                $value = $value->toApi($server);
             }
 
             // Is the value an array?

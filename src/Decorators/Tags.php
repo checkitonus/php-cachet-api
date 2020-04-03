@@ -3,6 +3,7 @@
 namespace CheckItOnUs\Cachet\Decorators;
 
 use CheckItOnUs\Cachet\ApiRequest;
+use CheckItOnUs\Cachet\Server;
 use Illuminate\Support\Collection;
 
 class Tags extends Collection implements ApiRequest
@@ -13,7 +14,7 @@ class Tags extends Collection implements ApiRequest
      *
      * @return mixed
      */
-    public function toApi()
+    public function toApi(Server $server = null)
     {
         return [
             'tags' => $this->all(),
