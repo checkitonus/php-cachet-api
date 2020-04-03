@@ -6,6 +6,7 @@ use ArrayAccess;
 use CheckItOnUs\Cachet\ApiRequest;
 use CheckItOnUs\Cachet\Decorators\Template\VariableCollection;
 use CheckItOnUs\Cachet\Helpers\Slug;
+use CheckItOnUs\Cachet\Server;
 use CheckItOnUs\Cachet\Traits\HasMetadata;
 
 class Template implements ArrayAccess, ApiRequest
@@ -18,7 +19,7 @@ class Template implements ArrayAccess, ApiRequest
      *
      * @return mixed
      */
-    public function toApi()
+    public function toApi(Server $server = null)
     {
         return [
             'template' => Slug::generate($this['name']),

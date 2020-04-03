@@ -4,6 +4,7 @@ namespace CheckItOnUs\Cachet\Decorators;
 
 use Carbon\Carbon;
 use CheckItOnUs\Cachet\ApiRequest;
+use CheckItOnUs\Cachet\Server;
 
 class Date extends Carbon implements ApiRequest
 {
@@ -13,8 +14,12 @@ class Date extends Carbon implements ApiRequest
      *
      * @return mixed
      */
-    public function toApi()
+    public function toApi(Server $server = null)
     {
-        return $this->format('Y-m-d H:i');
+        if($server && stristr('2.4', $server->version())) {
+            return $this->format('Y-m-d H:i');
+        }
+
+        return $this->format('d/m/Y H:i');
     }
 }

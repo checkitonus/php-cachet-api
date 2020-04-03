@@ -10,5 +10,5 @@ interface ApiRequest
      *
      * @return mixed
      */
-    public function toApi();
+    public function toApi(Server $server = null);
 }
