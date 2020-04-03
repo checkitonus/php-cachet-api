@@ -16,7 +16,7 @@ class Date extends Carbon implements ApiRequest
      */
     public function toApi(Server $server = null)
     {
-        if($server && stristr('2.4', $server->version())) {
+        if ($server && stristr('2.4', $server->version())) {
             return $this->format('Y-m-d H:i');
         }
 

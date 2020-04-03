@@ -74,7 +74,7 @@ abstract class BaseApiComponent implements ArrayAccess, ApiRequest
      */
     public function toApi(Server $server = null)
     {
-        if(!$server) {
+        if (!$server) {
             $server = $this->getServer();
         }
 
