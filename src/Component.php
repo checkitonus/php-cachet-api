@@ -7,6 +7,7 @@ use CheckItOnUs\Cachet\Decorators\Tags;
 
 class Component extends BaseApiComponent
 {
+    const UNKNOWN = 0;
     const OPERATIONAL = 1;
     const PERFORMANCE_ISSUES = 2;
     const PARTIAL_OUTAGE = 3;
