@@ -3,12 +3,12 @@
     "description": "PHP Implementation of the Cachet API",
     "type": "library",
     "require": {
-        "php": ">=5.6.0",
-        "guzzlehttp/guzzle": "^6.3",
-        "tightenco/collect": "^5.4",
-        "cocur/slugify": "^2.5",
-        "composer/semver": "^1.4",
-        "nesbot/carbon": "^1"
+        "php": ">=8",
+        "guzzlehttp/guzzle": "^7.7",
+        "tightenco/collect": "^9",
+        "cocur/slugify": "^4.3",
+        "composer/semver": "^3.3",
+        "nesbot/carbon": "^2.0.0"
     },
     "require-dev": {
         "psy/psysh": "*"
@@ -25,5 +25,10 @@
             "CheckItOnUs\\Cachet\\": "src/"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "config": {
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
+    }
 }
